@@ -5,7 +5,10 @@
 #include "enemy.h"
 #include <QGraphicsRectItem>
 
-Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0) {
+const qreal gravity = 10;
+const qreal jumpVelocity = -75.0;
+
+Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0), yVelocity(0) {
     setRect(0, 0, 50, 50);
     setPos(30, 720);
 
@@ -43,14 +46,30 @@ void Player::increase() {
     coinDisplay->setDefaultTextColor(Qt::blue);
 }
 
-
-void Player::keyPressEvent(QKeyEvent *event)
-{
-
-    if(event->key()== Qt::Key_Space)
-    {
-        setPos(x(),y()-20);    }
+void Player::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Space) {
+        yVelocity += jumpVelocity;
     }
+}
+
+void Player::advance() {
+        yVelocity += gravity;
+
+        qreal newY = y() + yVelocity;
+        qreal sceneHeight = scene()->sceneRect().height();
+
+        if (newY < 0) {
+            newY = 0;
+            yVelocity = 0;
+        } else if (newY > sceneHeight - rect().height()) {
+            newY = sceneHeight - rect().height();
+            yVelocity = 0;
+        }
+        qDebug() << "New Y Position:" << newY;
+
+        setPos(x(), newY);
+}
+
 
 void Player::createEnemy()
 {

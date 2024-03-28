@@ -13,7 +13,7 @@ Enemy::Enemy() {
     setRect(0, 0, widthVar, heightVar);
 
 
-    int random_number = QRandomGenerator::global()->bounded(400, 600 - heightVar - 30);
+    int random_number = QRandomGenerator::global()->bounded(100, 600 - heightVar - 30);
     setPos(800, random_number);
 
     QTimer *timer = new QTimer();
@@ -52,6 +52,10 @@ void Enemy::move() {
                 delete this;
                 return;
             }
+        }
+        else {
+            Player *player = dynamic_cast<Player*>(colliding_items[i]);
+            player->increase();
         }
     }
 }

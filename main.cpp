@@ -27,6 +27,10 @@ int main(int argc, char *argv[])
 
     view->setFocus();
 
+    QTimer *time2 = new QTimer();
+    QObject::connect(time2, SIGNAL(timeout()), player, SLOT(advance()));
+    time2->start(50);
+
     QTimer *time = new QTimer();
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createEnemy()));
     time->start(2000);

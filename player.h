@@ -14,6 +14,8 @@ class Player : public QObject, public QGraphicsRectItem
     int coins;
     QGraphicsTextItem* coinDisplay;
     QMessageBox* msgBox;
+    qreal yVelocity;
+
 public:
     Player(QGraphicsScene *scene);
     void keyPressEvent(QKeyEvent *event);
@@ -22,6 +24,7 @@ public slots:
     void createEnemy();
     void decrease();
     void increase();
+    void advance();
 };
 
 #endif // PLAYER_H
