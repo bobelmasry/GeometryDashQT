@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QGraphicsRectItem>
 #include "player.h"
+#include <QGraphicsPixmapItem>
 
 int main(int argc, char *argv[])
 {
@@ -17,8 +18,14 @@ int main(int argc, char *argv[])
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    QPixmap backgroundImage("://images/background.png");
+    backgroundImage = backgroundImage.scaled(scene->width(), scene->height());
+    QGraphicsPixmapItem *background = new QGraphicsPixmapItem(backgroundImage);
+    scene->addItem(background);
+    background->setPos(0, 0);
+
     QGraphicsRectItem *ground = new QGraphicsRectItem(0, scene->height() - 30, scene->width(), 30);
-    ground->setBrush(Qt::darkGreen);
+    ground->setBrush(Qt::red);
     scene->addItem(ground);
 
     Player *player = new Player(scene);

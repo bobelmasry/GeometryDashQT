@@ -10,7 +10,6 @@ const qreal jumpVelocity = -75.0;
 
 Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0), yVelocity(0) {
     setRect(0, 0, 50, 50);
-    setPos(30, 720);
 
     setBrush(Qt::blue);
 
@@ -65,7 +64,6 @@ void Player::advance() {
             newY = sceneHeight - rect().height();
             yVelocity = 0;
         }
-        qDebug() << "New Y Position:" << newY;
 
         setPos(x(), newY);
 }

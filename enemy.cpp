@@ -6,7 +6,8 @@
 #include <QGraphicsRectItem>
 
 Enemy::Enemy() {
-    setBrush(Qt::red);
+    setBrush(QColor(255,20,147));
+    setPen(QPen(Qt::white));
 
     int heightVar = QRandomGenerator::global()->bounded(50, 100);
     int widthVar = QRandomGenerator::global()->bounded(25, 50);
@@ -52,10 +53,6 @@ void Enemy::move() {
                 delete this;
                 return;
             }
-        }
-        else {
-            Player *player = dynamic_cast<Player*>(colliding_items[i]);
-            player->increase();
         }
     }
 }
