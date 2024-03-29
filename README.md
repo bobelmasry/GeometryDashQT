@@ -9,8 +9,6 @@
   </p>
 </p>
 
-![Contributors](https://img.shields.io/github/contributors/bobelmasry/GeometryDashQT?color=dark-green)
-
 ## About The Project
 
 Built for the CS2 project in the course Fundamentals of Computing || under Dr. Amr Elmougy
