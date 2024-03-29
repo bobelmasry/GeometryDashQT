@@ -1,4 +1,4 @@
-#include "level1_1.h"
+#include "level2.h"
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -7,7 +7,7 @@
 #include "player.h"
 #include <QGraphicsPixmapItem>
 
-level1_1::level1_1()
+level2::level2()
 {
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 800, 600);
@@ -40,9 +40,9 @@ level1_1::level1_1()
     QTimer *time = new QTimer();
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createEnemy()));
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
-    time->start(2000);
+    time->start(1500);
 
     view->show();
 }
 
-level1_1::~level1_1() {}
+level2::~level2() {}

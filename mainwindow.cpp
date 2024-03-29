@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "level1_1.h"
-#include "level1_2.h"
+#include "level1.h"
+#include "level2.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,7 +18,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_level1Button_clicked()
 {
     hide();
-    level1_1 *Level1Obj = new level1_1();
+    level1 *Level1Obj = new level1();
 
 }
 
@@ -26,7 +26,7 @@ void MainWindow::on_level1Button_clicked()
 void MainWindow::on_level2Button_clicked()
 {
     hide();
-    level1_2 *Level1Obj = new level1_2();
+    level2 *Level2Obj = new level2();
 
 }
 
