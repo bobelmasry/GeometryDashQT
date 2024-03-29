@@ -61,8 +61,8 @@ void Player::advance() {
         if (newY < 0) {
             newY = 0;
             yVelocity = 0;
-        } else if (newY > sceneHeight - rect().height()) {
-            newY = sceneHeight - rect().height();
+        } else if (newY > sceneHeight - rect().height() - 30) {
+            newY = sceneHeight - rect().height() - 30;
             yVelocity = 0;
         }
 

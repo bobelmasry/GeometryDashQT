@@ -8,9 +8,19 @@
 coin::coin() {
     setPixmap(QPixmap("://images/coin.png").scaled(100,100));
 
+    int randomX = QRandomGenerator::global()->bounded(400, 600 - pixmap().width());
+    int randomY = QRandomGenerator::global()->bounded(0, 600 - pixmap().height());
 
-    int random_number = QRandomGenerator::global()->bounded(100, 600 - 30);
-    setPos(800, random_number);
+    // makes sure that coin isn't colliding with any enemies on spawn
+    QList<QGraphicsItem*> colliding_items;
+    do {
+        setPos(randomX, randomY);
+        colliding_items = collidingItems();
+        if (!colliding_items.isEmpty()) {
+            randomX = QRandomGenerator::global()->bounded(400, 600 - pixmap().width());
+            randomY = QRandomGenerator::global()->bounded(0, 600 - pixmap().height());
+        }
+    } while (!colliding_items.isEmpty()); // repeats until no collisions are detected
 
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));

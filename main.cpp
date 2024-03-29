@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
     Player *player = new Player(scene);
     scene->addItem(player);
-    player->setPos(scene->width() / 2 - player->rect().width() / 2, scene->height() - player->rect().height());
+    player->setPos(50,700);
 
     view->setFocus();
 
