@@ -20,7 +20,7 @@ Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0)
 
     coinDisplay = new QGraphicsTextItem();
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
-    coinDisplay->setDefaultTextColor(Qt::blue);
+    coinDisplay->setDefaultTextColor(QColor(255,255,255));
     coinDisplay->setPos(30, 10);
     scene->addItem(coinDisplay);
 
@@ -43,7 +43,6 @@ void Player::decrease() {
 void Player::increase() {
     coins++;
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
-    coinDisplay->setDefaultTextColor(Qt::blue);
 }
 
 void Player::keyPressEvent(QKeyEvent *event) {
