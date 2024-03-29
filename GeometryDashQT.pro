@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     coin.cpp \
     enemy.cpp \
+    level1_1.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp
@@ -18,6 +19,7 @@ SOURCES += \
 HEADERS += \
     coin.h \
     enemy.h \
+    level1_1.h \
     mainwindow.h \
     player.h
 
