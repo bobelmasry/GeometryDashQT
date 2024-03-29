@@ -17,6 +17,6 @@ Built for the CS2 project in the course Fundamentals of Computing || under Dr. A
 
 ## Authors
 
-- **Omar Rabeh** - _Computer Engineering Student_ - [Shaan Khan](https://github.com/omar-rabeh-18)
-- **Nour El Ghaly** - _Computer Engineering Student_ - [Shaan Khan](https://github.com/NourElghaly)
-- **Omar Rabeh** - _Computer Science Student_ - [Shaan Khan](https://github.com/bobelmasry)
+- **Omar Rabeh** - _Computer Engineering Student_ - [Omar Rabeh](https://github.com/omar-rabeh-18)
+- **Nour El Ghaly** - _Computer Engineering Student_ - [Nour El Ghaly](https://github.com/NourElghaly)
+- **Aly Youssef** - _Computer Science Student_ - [Aly Youssef](https://github.com/bobelmasry)
