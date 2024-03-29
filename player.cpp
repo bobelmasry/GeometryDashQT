@@ -3,6 +3,7 @@
 #include <QGraphicsScene>
 #include <QDebug>
 #include "enemy.h"
+#include "coin.h"
 #include <QGraphicsRectItem>
 
 const qreal gravity = 10;
@@ -73,4 +74,10 @@ void Player::createEnemy()
 {
     Enemy* enemy = new Enemy();
     scene()->addItem(enemy);
+}
+
+void Player::createCoin()
+{
+    coin* Coin = new coin();
+    scene()->addItem(Coin);
 }

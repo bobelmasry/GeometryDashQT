@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
 
     QTimer *time = new QTimer();
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createEnemy()));
+    QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
     time->start(2000);
 
     view->show();

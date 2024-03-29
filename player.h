@@ -22,6 +22,7 @@ public:
     int getHealth();
 public slots:
     void createEnemy();
+    void createCoin();
     void decrease();
     void increase();
     void advance();
