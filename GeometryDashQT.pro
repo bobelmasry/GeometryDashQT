@@ -11,7 +11,6 @@ CONFIG += c++17
 SOURCES += \
     coin.cpp \
     enemy.cpp \
-    homewindow.cpp \
     main.cpp \
     mainwindow.cpp \
     player.cpp
@@ -19,12 +18,10 @@ SOURCES += \
 HEADERS += \
     coin.h \
     enemy.h \
-    homewindow.h \
     mainwindow.h \
     player.h
 
 FORMS += \
-    homewindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.
