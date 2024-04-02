@@ -22,6 +22,8 @@ private slots:
 
     void on_level2Button_clicked();
 
+    void on_itemShopButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

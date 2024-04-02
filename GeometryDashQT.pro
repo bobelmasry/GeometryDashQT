@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     coin.cpp \
     enemy.cpp \
+    itemshopwindow.cpp \
     level1.cpp \
     level2.cpp \
     main.cpp \
@@ -20,12 +21,14 @@ SOURCES += \
 HEADERS += \
     coin.h \
     enemy.h \
+    itemshopwindow.h \
     level1.h \
     level2.h \
     mainwindow.h \
     player.h
 
 FORMS += \
+    itemshopwindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.

@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="level1Button">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>290</y>
+      <x>200</x>
+      <y>370</y>
       <width>80</width>
       <height>24</height>
      </rect>
@@ -30,14 +30,27 @@
    <widget class="QPushButton" name="level2Button">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>290</y>
+      <x>340</x>
+      <y>370</y>
       <width>80</width>
       <height>24</height>
      </rect>
     </property>
     <property name="text">
      <string>Level 2</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="itemShopButton">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>370</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Item Shop</string>
     </property>
    </widget>
   </widget>
