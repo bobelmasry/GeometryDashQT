@@ -11,8 +11,22 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setStyleSheet("background-image: url(://images/home-background.png);");
-    ui->level1Button->setStyleSheet("color: white;" "background-color: white;");
-    ui->level2Button->setStyleSheet("color: white;" "background-color: white;");
+
+    //level1 image
+    QPixmap level1_image(":/images/level1 image.png");
+    QIcon Button_Image1 (level1_image);
+    ui->level1Button->setIcon(Button_Image1);
+    ui->level1Button->setIconSize(QSize(130,130));
+
+
+    //level2 image
+    QPixmap level2_image(":/images/level2 image.png");
+    QIcon Button_Image2 (level2_image);
+    ui->level2Button->setIcon(Button_Image2);
+    ui->level2Button->setIconSize(QSize(120,120));
+
+
+
     ui->itemShopButton->setStyleSheet("color: white;" "background-color: white;");
 
     main_menu_music->setSource(QUrl("qrc:/Sound/Main_Music.mp3"));

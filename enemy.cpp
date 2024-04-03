@@ -48,13 +48,12 @@ void Enemy::move() {
 
     for (int i = 0; i < colliding_items.size(); ++i) {
         if (typeid(*(colliding_items[i])) == typeid(Player)) {
+             death_sound->play();
             Player *player = dynamic_cast<Player*>(colliding_items[i]);
             player->decrease();
             if (player) {
                     scene()->removeItem(colliding_items[i]);
                 delete colliding_items[i];
-                    death_sound->play();
-
                 delete this;
                 return;
             }

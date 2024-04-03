@@ -10,10 +10,9 @@
 level2::level2()
 {
     QGraphicsScene *scene = new QGraphicsScene();
-    scene->setSceneRect(0, 0, 800, 600);
+    scene->setSceneRect(0, 0, 1560, 870);
 
     QGraphicsView *view = new QGraphicsView(scene);
-    view->setFixedSize(800, 600);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -48,7 +47,7 @@ level2::level2()
     start_level->setVolume(50);
     start_level_audio->play();
 
-    view->show();
+    view->showFullScreen();
 }
 
 
