@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/background.png</file>
         <file>images/coin.png</file>
         <file>images/home-background.png</file>
         <file>Sound/Main_Music.mp3</file>
@@ -10,5 +9,9 @@
         <file>images/level2 image.png</file>
         <file>images/level1_floor.png</file>
         <file>images/player_basic.png</file>
+        <file>images/level1_background.png</file>
+        <file>images/level2_background.png</file>
+        <file>images/level2_floor.png</file>
+        <file>Sound/level1_music.mp3</file>
     </qresource>
 </RCC>

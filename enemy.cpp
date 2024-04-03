@@ -24,6 +24,7 @@ Enemy::Enemy() {
     death_sound->setSource(QUrl("qrc:/Sound/death_sound.mp3"));
     death_sound->setAudioOutput(death_audio);
     death_audio->setVolume(50);
+
 }
 
 
@@ -49,6 +50,7 @@ void Enemy::move() {
     for (int i = 0; i < colliding_items.size(); ++i) {
         if (typeid(*(colliding_items[i])) == typeid(Player)) {
              death_sound->play();
+            //level1_music->stop();
             Player *player = dynamic_cast<Player*>(colliding_items[i]);
             player->decrease();
             if (player) {

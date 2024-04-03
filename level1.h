@@ -20,6 +20,10 @@ public:
 private:
     QAudioOutput* start_level = new QAudioOutput();
     QMediaPlayer* start_level_audio = new QMediaPlayer();
+    QAudioOutput* steromadness= new QAudioOutput();
+    QMediaPlayer* level1_music= new QMediaPlayer();
+
+
 
 };
 

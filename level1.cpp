@@ -12,11 +12,17 @@ level1::level1()
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 1560, 870);
 
+    level1_music->setSource(QUrl("qrc:/Sound/level1_music.mp3"));
+    level1_music->setAudioOutput(steromadness);
+    steromadness->setVolume(50);
+    level1_music->play();
+
+
     QGraphicsView *view = new QGraphicsView(scene);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QPixmap backgroundImage("://images/background.png");
+    QPixmap backgroundImage(":/images/level1_background.png");
     backgroundImage = backgroundImage.scaled(scene->width(), scene->height());
     QGraphicsPixmapItem *background = new QGraphicsPixmapItem(backgroundImage);
     scene->addItem(background);

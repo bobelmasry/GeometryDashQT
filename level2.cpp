@@ -16,20 +16,21 @@ level2::level2()
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QPixmap backgroundImage("://images/background.png");
+    QPixmap backgroundImage(":/images/level2_background.png");
     backgroundImage = backgroundImage.scaled(scene->width(), scene->height());
     QGraphicsPixmapItem *background = new QGraphicsPixmapItem(backgroundImage);
     scene->addItem(background);
     background->setPos(0, 0);
 
-    QGraphicsRectItem *ground = new QGraphicsRectItem(0, scene->height() - 30, scene->width(), 30);
-    ground->setBrush(Qt::red);
-    scene->addItem(ground);
+    QPixmap level1_floor_image(":/images/level2_floor.png");
+    level1_floor_image=level1_floor_image.scaled(scene->width(),400);
+    QGraphicsPixmapItem*level2_floor=new QGraphicsPixmapItem(level1_floor_image);
+    level2_floor->setPos(0,scene->height()-200);
+    scene->addItem(level2_floor);
 
     Player *player = new Player(scene);
     scene->addItem(player);
-    player->setPos(50,700);
-
+    player->setPos(560,400);
     view->setFocus();
 
     QTimer *time2 = new QTimer();
@@ -39,7 +40,7 @@ level2::level2()
     QTimer *time = new QTimer();
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createEnemy()));
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
-    time->start(1500);
+    time->start(2000);
 
     //code to play sound when clicking on level
     start_level_audio->setSource(QUrl("qrc:/Sound/start_level_audio.mp3"));
@@ -48,6 +49,8 @@ level2::level2()
     start_level_audio->play();
 
     view->showFullScreen();
+
+
 }
 
 
