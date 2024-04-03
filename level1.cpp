@@ -22,14 +22,15 @@ level1::level1()
     scene->addItem(background);
     background->setPos(0, 0);
 
-    QGraphicsRectItem *ground = new QGraphicsRectItem(0, scene->height() - 30, scene->width(), 30);
-    ground->setBrush(Qt::red);
-    scene->addItem(ground);
+    QPixmap level1_floor_image(":/images/level1_floor.png");
+    level1_floor_image=level1_floor_image.scaled(scene->width(),400);
+    QGraphicsPixmapItem*level1_floor=new QGraphicsPixmapItem(level1_floor_image);
+    level1_floor->setPos(0,scene->height()-200);
+    scene->addItem(level1_floor);
 
     Player *player = new Player(scene);
     scene->addItem(player);
-    player->setPos(50,700);
-
+    player->setPos(560,400);
     view->setFocus();
 
     QTimer *time2 = new QTimer();

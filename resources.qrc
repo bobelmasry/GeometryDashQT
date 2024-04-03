@@ -8,5 +8,7 @@
         <file>Sound/death_sound.mp3</file>
         <file>images/level1 image.png</file>
         <file>images/level2 image.png</file>
+        <file>images/level1_floor.png</file>
+        <file>images/player_basic.png</file>
     </qresource>
 </RCC>
