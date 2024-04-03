@@ -4,6 +4,7 @@
 #include "level2.h"
 #include "itemshopwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -14,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->level2Button->setStyleSheet("color: white;" "background-color: white;");
     ui->itemShopButton->setStyleSheet("color: white;" "background-color: white;");
 
+    main_menu_music->setSource(QUrl("qrc:/Sound/Main_Music.mp3"));
+    main_menu_music->setAudioOutput(main_theme);
+    main_theme->setVolume(50);
+    main_menu_music->play();
 }
 
 MainWindow::~MainWindow()
@@ -25,6 +30,9 @@ void MainWindow::on_level1Button_clicked()
 {
     hide();
     level1 *Level1Obj = new level1();
+    main_menu_music->stop();
+
+
 
 }
 
@@ -33,6 +41,7 @@ void MainWindow::on_level2Button_clicked()
 {
     hide();
     level2 *Level2Obj = new level2();
+    main_menu_music->stop();
 
 }
 
@@ -42,5 +51,7 @@ void MainWindow::on_itemShopButton_clicked()
     hide();
     itemShopWindow* itemWindow = new itemShopWindow(this);
     itemWindow->show();
+    main_menu_music->stop();
+
 }
 

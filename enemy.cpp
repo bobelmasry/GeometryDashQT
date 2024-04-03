@@ -20,6 +20,10 @@ Enemy::Enemy() {
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
     timer->start(50);
+
+    death_sound->setSource(QUrl("qrc:/Sound/death_sound.mp3"));
+    death_sound->setAudioOutput(death_audio);
+    death_audio->setVolume(50);
 }
 
 
@@ -49,6 +53,7 @@ void Enemy::move() {
             if (player) {
                     scene()->removeItem(colliding_items[i]);
                 delete colliding_items[i];
+                    death_sound->play();
 
                 delete this;
                 return;

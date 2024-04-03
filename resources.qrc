@@ -3,5 +3,8 @@
         <file>images/background.png</file>
         <file>images/coin.png</file>
         <file>images/home-background.png</file>
+        <file>Sound/Main_Music.mp3</file>
+        <file>Sound/start_level_audio.mp3</file>
+        <file>Sound/death_sound.mp3</file>
     </qresource>
 </RCC>

@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -17,6 +19,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
     void on_level1Button_clicked();
 
@@ -26,5 +29,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QAudioOutput* main_theme = new QAudioOutput();
+    QMediaPlayer* main_menu_music = new QMediaPlayer();
+
+
+
 };
 #endif // MAINWINDOW_H

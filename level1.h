@@ -2,6 +2,8 @@
 #define LEVEL1_H
 
 #include <QDialog>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 namespace Ui {
 class level1;
@@ -14,6 +16,10 @@ class level1 : public QDialog
 public:
     level1();
     ~level1();
+
+private:
+    QAudioOutput* start_level = new QAudioOutput();
+    QMediaPlayer* start_level_audio = new QMediaPlayer();
 
 };
 

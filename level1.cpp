@@ -42,7 +42,15 @@ level1::level1()
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
     time->start(2000);
 
+    //code to play sound when clicking on level
+    start_level_audio->setSource(QUrl("qrc:/Sound/start_level_audio.mp3"));
+    start_level_audio->setAudioOutput(start_level);
+    start_level->setVolume(50);
+    start_level_audio->play();
+
     view->show();
+
+
 }
 
 level1::~level1() {}
