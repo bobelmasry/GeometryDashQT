@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "player.h"
 #include <QGraphicsRectItem>
+#include <QApplication>
 
 Enemy::Enemy() {
     setBrush(QColor(255,20,147));
@@ -50,13 +51,13 @@ void Enemy::move() {
     for (int i = 0; i < colliding_items.size(); ++i) {
         if (typeid(*(colliding_items[i])) == typeid(Player)) {
              death_sound->play();
-            //level1_music->stop();
             Player *player = dynamic_cast<Player*>(colliding_items[i]);
             player->decrease();
             if (player) {
                     scene()->removeItem(colliding_items[i]);
                 delete colliding_items[i];
                 delete this;
+                QApplication::quit();
                 return;
             }
         }

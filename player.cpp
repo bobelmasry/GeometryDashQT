@@ -11,9 +11,9 @@ const qreal gravity = 12;
 const qreal jumpVelocity = -80;
 
 Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0), yVelocity(0) {
-    setRect(0, 0, 100, 100);
+    setRect(0, 0, 75, 75);
 
-    setBrush(Qt::blue);
+    setBrush(Qt::red);
 
     setFlag(QGraphicsItem::ItemIsFocusable);
 
