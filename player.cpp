@@ -76,11 +76,11 @@ void Player::advance() {
 
 }
 
-//void Player::createEnemy()
-//{
-  // Enemy* enemy = new Enemy();
-  // scene()->addItem(enemy);
-//}
+void Player::createEnemy()
+{
+   Enemy* enemy = new Enemy();
+   scene()->addItem(enemy);
+}
 
 void Player::createCoin()
 {

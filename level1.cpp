@@ -36,7 +36,7 @@ level1::level1()
 
     Player *player = new Player(scene);
     scene->addItem(player);
-    player->setPos(560,400);
+    player->setPos(300,400);
     view->setFocus();
 
     QTimer *time2 = new QTimer();
