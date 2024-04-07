@@ -3,21 +3,17 @@
 #include <QTimer>
 #include <QDebug>
 #include "player.h"
-#include <QRandomGenerator>
 
 Enemy::Enemy() {
-    // Define the polygon for the enemy triangle
     QPolygonF polygon;
     polygon << QPointF(0, 30) << QPointF(15, 0) << QPointF(30, 30);
 
     setBrush(QColor(255,20,147));
     setPen(QPen(Qt::white));
 
-    // Set the polygon and its position
     setPolygon(polygon);
 
-    int random_number = QRandomGenerator::global()->bounded(100, 600 - 30);
-    setPos(800, random_number);
+    setPos(800, 640);
 
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
@@ -30,8 +26,9 @@ Enemy::Enemy() {
     death_audio->setVolume(50);
 }
 
+
 void Enemy::move() {
-    setPos(x() - 5, y());
+    setPos(x() - 15, y());
     QList<QGraphicsItem*> colliding_items = collidingItems();
 
     if (y() + polygon().boundingRect().height() > 800) {
