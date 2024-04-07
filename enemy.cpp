@@ -6,14 +6,14 @@
 
 Enemy::Enemy() {
     QPolygonF polygon;
-    polygon << QPointF(0, 30) << QPointF(15, 0) << QPointF(30, 30);
+    polygon << QPointF(0, 60) << QPointF(30, 0) << QPointF(60, 60);
 
     setBrush(QColor(255,20,147));
     setPen(QPen(Qt::white));
 
     setPolygon(polygon);
 
-    setPos(800, 640);
+    setPos(1800, 610);
 
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
@@ -28,7 +28,7 @@ Enemy::Enemy() {
 
 
 void Enemy::move() {
-    setPos(x() - 15, y());
+    setPos(x() - 30, y());
     QList<QGraphicsItem*> colliding_items = collidingItems();
 
     if (y() + polygon().boundingRect().height() > 800) {
