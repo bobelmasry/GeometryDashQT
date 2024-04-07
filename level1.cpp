@@ -12,11 +12,19 @@ level1::level1()
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 1560, 870);
 
-    level1_music->setSource(QUrl("qrc:/Sound/level1_music.mp3"));
-    level1_music->setAudioOutput(steromadness);
-    steromadness->setVolume(50);
-    level1_music->play();
+    // Initialize and play the start_level audio before level1_music
+    start_level_audio->setSource(QUrl("qrc:/Sound/start_level_audio.mp3"));
+    start_level_audio->setAudioOutput(start_level);
+    start_level->setVolume(50);
+    start_level_audio->play();
 
+    // Delay the level1_music audio
+    QTimer::singleShot(1000, this, [this]() {
+        level1_music->setSource(QUrl("qrc:/Sound/level1_music.mp3"));
+        level1_music->setAudioOutput(steromadness);
+        steromadness->setVolume(50);
+        level1_music->play();
+    });
 
     QGraphicsView *view = new QGraphicsView(scene);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -48,15 +56,7 @@ level1::level1()
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
     time->start(2000);
 
-    //code to play sound when clicking on level
-    start_level_audio->setSource(QUrl("qrc:/Sound/start_level_audio.mp3"));
-    start_level_audio->setAudioOutput(start_level);
-    start_level->setVolume(50);
-    start_level_audio->play();
-
     view->showFullScreen();
-
-
 }
 
 level1::~level1() {}

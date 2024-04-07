@@ -29,10 +29,14 @@ public slots:
     void increase();
     void advance();
     void rotation();
+    void emitParticles();
 private:
     qreal angle;
     QTimer* rotationTimer;
     QPropertyAnimation *rotationAnimation;
+    QTimer* particleTimer;
+    bool in_air;
+
 };
 
 #endif // PLAYER_H
