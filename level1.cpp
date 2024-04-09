@@ -53,8 +53,11 @@ level1::level1()
 
     QTimer *time = new QTimer();
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createEnemy()));
+    time->start(1500);
+
+    QTimer *time3 = new QTimer();
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
-    time->start(2000);
+    time3->start(1500);
 
     view->showFullScreen();
 }
