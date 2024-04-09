@@ -1,24 +1,23 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include <QGraphicsPolygonItem>
+#include <QGraphicsItemGroup>
 #include <QObject>
-#include <QTimer>
-#include <QRandomGenerator>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QRandomGenerator>
+#include <QTimer>
 
-class Enemy : public QObject, public QGraphicsPolygonItem
+class Enemy : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 public:
-    void extracted();
     Enemy();
 public slots:
     void move();
 private:
-    QMediaPlayer* death_sound = new QMediaPlayer;
-    QAudioOutput* death_audio = new QAudioOutput;
+    QMediaPlayer* death_sound = nullptr;
+    QAudioOutput* death_audio = nullptr;
 };
 
 #endif // ENEMY_H
