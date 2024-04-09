@@ -3,11 +3,8 @@
 #include <QTimer>
 #include <QDebug>
 #include "player.h"
-<<<<<<< HEAD
 #include <QGraphicsRectItem>
 #include <QApplication>
-=======
->>>>>>> Nour's-branch
 
 Enemy::Enemy() {
     QPolygonF polygon;
@@ -52,11 +49,8 @@ void Enemy::move() {
 
     for (int i = 0; i < colliding_items.size(); ++i) {
         if (typeid(*(colliding_items[i])) == typeid(Player)) {
-<<<<<<< HEAD
              death_sound->play();
-=======
             death_sound->play();
->>>>>>> Nour's-branch
             Player *player = dynamic_cast<Player*>(colliding_items[i]);
             player->decrease();
             if (player) {

@@ -100,21 +100,16 @@ void Player::advance()
 
 void Player::createEnemy()
 {
-<<<<<<< HEAD
    Enemy* enemy = new Enemy();
    scene()->addItem(enemy);
-=======
-  Enemy* enemy = new Enemy();
-  scene()->addItem(enemy);
->>>>>>> Nour's-branch
 }
 
-/*
+
 void Player::createCoin()
 {
     coin* Coin = new coin();
     scene()->addItem(Coin);
-}*/
+}
 
 
 void Player::rotation() {
