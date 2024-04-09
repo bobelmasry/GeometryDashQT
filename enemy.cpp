@@ -9,13 +9,14 @@
 Enemy::Enemy() {
     QPolygonF polygon;
     polygon << QPointF(0, 60) << QPointF(30, 0) << QPointF(60, 60);
+    int randomX = QRandomGenerator::global()->bounded(1000, 1600);
 
     setBrush(QColor(255,20,147));
     setPen(QPen(Qt::white));
 
     setPolygon(polygon);
 
-    setPos(1800, 610);
+    setPos(randomX, 610);
 
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
