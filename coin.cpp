@@ -9,7 +9,7 @@ coin::coin() {
     setPixmap(QPixmap("://images/coin.png").scaled(100,100));
 
     int randomX = QRandomGenerator::global()->bounded(400, 600 - pixmap().width());
-    int randomY = QRandomGenerator::global()->bounded(0, 600 - pixmap().height());
+    int randomY = QRandomGenerator::global()->bounded(400, 600);
 
     // makes sure that coin isn't colliding with any enemies on spawn
     QList<QGraphicsItem*> colliding_items;
@@ -18,7 +18,7 @@ coin::coin() {
         colliding_items = collidingItems();
         if (!colliding_items.isEmpty()) {
             randomX = QRandomGenerator::global()->bounded(400, 600 - pixmap().width());
-            randomY = QRandomGenerator::global()->bounded(0, 600 - pixmap().height());
+            randomY = QRandomGenerator::global()->bounded(400, 600);
         }
     } while (!colliding_items.isEmpty()); // repeats until no collisions are detected
 
