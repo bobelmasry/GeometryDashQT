@@ -67,11 +67,17 @@ void Enemy::move() {
     setPos(x() - 11.5, y());
     QList<QGraphicsItem*> colliding_items = collidingItems();
 
+    if (x() + boundingRect().width() < boundingRect().width()) {
+        scene()->removeItem(this);
+        delete this;
+        return;
+    }
+
     for (int i = 0; i < colliding_items.size(); ++i) {
         if (typeid(*(colliding_items[i])) == typeid(m_player)) {
             death_sound->play();
             death_sound->play();
-            m_player.setPosition(50,500);
+            m_player.setPosition(300,500);
             m_player.numOfAttempts++;
             m_player.showAttempts();
             delete this;

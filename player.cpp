@@ -9,7 +9,7 @@
 
 
 const qreal gravity = 15;
-const qreal jumpVelocity = -80;
+const qreal jumpVelocity = -85;
 
 Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0), yVelocity(0) {
     setRect(0, 0, 75, 75);
@@ -88,6 +88,10 @@ void Player::createCoin()
     scene()->addItem(Coin);
 }
 
+void Player::resetCoins(){
+    coins = 0;
+    coinDisplay->setPlainText("Coins: " + QString::number(coins));
+}
 
 void Player::rotation() {
     static qreal currentRotation = 0;
@@ -135,6 +139,7 @@ void Player::showAttempts(){
         scene()->removeItem(attemptsText);
         delete attemptsText;
     });
+    resetCoins();
 }
 
 void Player::emitParticles()

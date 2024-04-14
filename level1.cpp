@@ -47,6 +47,9 @@ level1::level1()
     player->setPos(300,400);
     view->setFocus();
 
+    // Initial value of numOfAttempts
+    int initialNumOfAttempts = player->numOfAttempts;
+
     QTimer *time2 = new QTimer();
     QObject::connect(time2, SIGNAL(timeout()), player, SLOT(advance()));
     time2->start(50);
@@ -58,8 +61,48 @@ level1::level1()
     QTimer *time3 = new QTimer();
     QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
     time3->start(1500);
-
     view->showFullScreen();
+
+    // Timer to check if numOfAttempts hasn't changed for 30 seconds
+    QTimer *timeCheck = new QTimer();
+    int elapsedTime = 0; // Elapsed time counter
+    QObject::connect(timeCheck, &QTimer::timeout, [player, time, time3, timeCheck, view, scene, &elapsedTime, initialNumOfAttempts]() {
+        qDebug() << "Elapsed Time:" << elapsedTime;
+        qDebug() << "Initial Num of Attempts:" << initialNumOfAttempts;
+        qDebug() << "Player Num of Attempts:" << player->numOfAttempts;
+        elapsedTime += timeCheck->interval();
+        QGraphicsTextItem *elapsedTimeText = new QGraphicsTextItem();
+        QFont font;
+        font.setPointSize(14);
+        elapsedTimeText->setFont(font);
+        elapsedTimeText->setDefaultTextColor(Qt::white);
+        scene->addItem(elapsedTimeText);
+        int textWidth = 100;
+        elapsedTimeText->setPos(scene->width() - textWidth, 0);
+
+        QObject::connect(time, &QTimer::timeout, [elapsedTimeText, &elapsedTime]() {
+            elapsedTimeText->setPlainText(QString("Elapsed Time: %1 seconds").arg(elapsedTime / 1000)); // Update text with elapsed time in seconds
+        });
+        if (elapsedTime >= 30000 && player->numOfAttempts == initialNumOfAttempts) { // Check if 30 seconds have passed and numOfAttempts hasn't changed
+            time->stop(); // Stop creating enemies
+            time3->stop(); // Stop creating coins
+
+            QGraphicsTextItem *gameOverText = new QGraphicsTextItem("Game Over");
+            QFont font;
+            font.setPointSize(30);
+            gameOverText->setFont(font);
+            gameOverText->setDefaultTextColor(Qt::white);
+            gameOverText->setPos((scene->width() - gameOverText->boundingRect().width()) / 2,
+                                 (scene->height() - gameOverText->boundingRect().height()) / 2);
+            scene->addItem(gameOverText);
+
+            // Close the window after 2 seconds
+            QTimer::singleShot(2000, view, &QGraphicsView::close);
+
+            timeCheck->stop();
+        }
+    });
+    timeCheck->start(1000);
 }
 
 level1::~level1() {}

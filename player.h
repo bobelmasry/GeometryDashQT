@@ -31,6 +31,7 @@ public slots:
     void emitParticles();
     void setPosition(qreal x, qreal y);
     void showAttempts();
+    void resetCoins();
 private:
     qreal angle;
     QTimer* rotationTimer;
