@@ -32,21 +32,6 @@ void coin::move() {
     setPos(x() - 23, y());
     QList<QGraphicsItem*> colliding_items = collidingItems();
 
-
-    if (y() + pixmap().height() > 800) {
-        QList<QGraphicsItem*> scene_items = scene()->items();
-        for (int j = 0; j < scene_items.size(); ++j) {
-            Player *player = dynamic_cast<Player*>(scene_items[j]);
-            if (player) {
-                player->decrease();
-                break;
-            }
-        }
-        scene()->removeItem(this);
-        delete this;
-        return;
-    }
-
     for (int i = 0; i < colliding_items.size(); ++i) {
         if (typeid(*(colliding_items[i])) == typeid(Player)) {
             Player *player = dynamic_cast<Player*>(colliding_items[i]);

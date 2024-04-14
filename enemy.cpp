@@ -5,7 +5,7 @@
 #include <QPolygonF>
 #include <QApplication>
 
-Enemy::Enemy() {
+Enemy::Enemy(Player &player) : m_player(player) {
     int randomX = QRandomGenerator::global()->bounded(1000, 1600);
     // hasRect == 0 means has rectangle
     int hasRect = QRandomGenerator::global()->bounded(0, 3);
@@ -67,33 +67,15 @@ void Enemy::move() {
     setPos(x() - 11.5, y());
     QList<QGraphicsItem*> colliding_items = collidingItems();
 
-    if (y() + boundingRect().height() > 800) {
-        QList<QGraphicsItem*> scene_items = scene()->items();
-        for (int j = 0; j < scene_items.size(); ++j) {
-            Player *player = dynamic_cast<Player*>(scene_items[j]);
-            if (player) {
-                player->decrease();
-                break;
-            }
-        }
-        scene()->removeItem(this);
-        delete this;
-        return;
-    }
-
     for (int i = 0; i < colliding_items.size(); ++i) {
-        if (typeid(*(colliding_items[i])) == typeid(Player)) {
+        if (typeid(*(colliding_items[i])) == typeid(m_player)) {
             death_sound->play();
             death_sound->play();
-            Player *player = dynamic_cast<Player*>(colliding_items[i]);
-            player->decrease();
-            if (player) {
-                scene()->removeItem(colliding_items[i]);
-                delete colliding_items[i];
-                delete this;
-                QApplication::quit();
-                return;
-            }
+            m_player.setPosition(50,500);
+            m_player.numOfAttempts++;
+            m_player.showAttempts();
+            delete this;
+            return;
         }
     }
 }

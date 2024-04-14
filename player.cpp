@@ -38,19 +38,6 @@ Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0)
     particleTimer->start(500);
 }
 
-int Player::getHealth(){
-    return health;
-}
-
-void Player::decrease() {
-    health--;
-    if (health < 1) {
-        msgBox->setText("Game Over!\n Coins: " + QString::number(coins));
-        msgBox->setWindowTitle("Game Over");
-        msgBox->exec();
-    }
-}
-
 void Player::increase() {
     coins++;
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
@@ -86,21 +73,11 @@ void Player::advance()
             particleTimer->stop();
 
         setPos(x(), newY);
-
-
-        QList<QGraphicsItem*> colliding_items = collidingItems();
-        for (int i = 0; i < colliding_items.size(); ++i)
-        {
-            if (typeid(*(colliding_items[i])) == typeid(level1))
-            {
-
-            }
-        }
 }
 
 void Player::createEnemy()
 {
-   Enemy* enemy = new Enemy();
+   Enemy* enemy = new Enemy(*this);
    scene()->addItem(enemy);
 }
 
@@ -133,6 +110,33 @@ void Player::rotation() {
     }
 }
 
+void Player::setPosition(qreal x, qreal y)
+{
+    setPos(x, y);
+}
+
+void Player::showAttempts(){
+    QGraphicsTextItem *attemptsText = new QGraphicsTextItem(QString("Attempt %1").arg(this->numOfAttempts));
+
+    QFont font;
+    font.setPointSize(40);
+    font.setBold(true);
+    attemptsText->setFont(font);
+
+    attemptsText->setDefaultTextColor(Qt::white);
+
+    int sceneWidth = scene()->width();
+    int textWidth = attemptsText->boundingRect().width();
+    attemptsText->setPos((sceneWidth - textWidth) / 2, 50); // Adjust Y position as needed
+    scene()->addItem(attemptsText);
+
+    // Remove the text item after 2 seconds
+    QTimer::singleShot(2000, [=]() {
+        scene()->removeItem(attemptsText);
+        delete attemptsText;
+    });
+}
+
 void Player::emitParticles()
 {
     qreal particleY = y() + rect().height(); // y coordinate for all particles (bottom of the player)
@@ -154,11 +158,16 @@ void Player::emitParticles()
     connect(moveTimer, &QTimer::timeout, [=]() {
         particle->setX(particle->x() - 1); // move the particle to the left
 
-        qreal distance = qAbs(particle->x() - x()); // calculate the absolute distance between the particle and the player
+        try {
+            qreal distance = qAbs(particle->x() - x()); // calculate the absolute distance between the particle and the player
 
-        if (distance > 50) { // check if the distance is greater than 100 pixels
-            scene()->removeItem(particle); // remove the particle from the scene and delete it
-            delete particle;
+            if (distance > 50) { // check if the distance is greater than 100 pixels
+                delete particle;
+                moveTimer->stop(); // stop the timer
+                delete moveTimer; // delete the timer
+            }
+        } catch (std::exception const& e) {
+            qDebug() << "Exception occurred: " << e.what();
             moveTimer->stop(); // stop the timer
             delete moveTimer; // delete the timer
         }

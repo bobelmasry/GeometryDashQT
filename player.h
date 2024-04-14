@@ -21,15 +21,16 @@ class Player : public QObject, public QGraphicsRectItem
 public:
     Player(QGraphicsScene *scene);
     void keyPressEvent(QKeyEvent *event);
-    int getHealth();
+    int numOfAttempts = 1;
 public slots:
     void createEnemy();
     void createCoin();
-    void decrease();
     void increase();
     void advance();
     void rotation();
     void emitParticles();
+    void setPosition(qreal x, qreal y);
+    void showAttempts();
 private:
     qreal angle;
     QTimer* rotationTimer;
