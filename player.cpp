@@ -143,7 +143,7 @@ void Player::showAttempts()
     // Calculate the position of the text item
     int sceneWidth = scene()->width();
     int textWidth = attemptsText->boundingRect().width();
-    attemptsText->setPos((sceneWidth - textWidth) / 2, 50); //
+    attemptsText->setPos((sceneWidth - textWidth) / 2, 50);
 
     // Remove the text item after 2 seconds
     QTimer::singleShot(2000, [=]() {
