@@ -1,11 +1,13 @@
 #include "level1.h"
 #include <QApplication>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QTimer>
-#include <QGraphicsRectItem>
 #include "player.h"
-#include <QGraphicsPixmapItem>
+#include <QDateTime>
+
 
 level1::level1()
 {
@@ -37,18 +39,20 @@ level1::level1()
     background->setPos(0, 0);
 
     QPixmap level1_floor_image(":/images/level1_floor.png");
-    level1_floor_image=level1_floor_image.scaled(scene->width(),400);
-    QGraphicsPixmapItem*level1_floor=new QGraphicsPixmapItem(level1_floor_image);
-    level1_floor->setPos(0,scene->height()-200);
+    level1_floor_image = level1_floor_image.scaled(scene->width(), 400);
+    QGraphicsPixmapItem *level1_floor = new QGraphicsPixmapItem(level1_floor_image);
+    level1_floor->setPos(0, scene->height() - 200);
     scene->addItem(level1_floor);
 
     Player *player = new Player(scene);
     scene->addItem(player);
-    player->setPos(300,400);
+    player->setPos(300, 400);
     view->setFocus();
 
-    // Initial value of numOfAttempts
+
     int initialNumOfAttempts = player->numOfAttempts;
+
+    QDateTime startTime = QDateTime::currentDateTime();
 
     QTimer *time2 = new QTimer();
     QObject::connect(time2, SIGNAL(timeout()), player, SLOT(advance()));
@@ -63,46 +67,76 @@ level1::level1()
     time3->start(1500);
     view->showFullScreen();
 
-    // Timer to check if numOfAttempts hasn't changed for 30 seconds
+    QGraphicsTextItem *elapsedTimeText = new QGraphicsTextItem();
+    QFont font;
+    font.setPointSize(14);
+    elapsedTimeText->setFont(font);
+    elapsedTimeText->setDefaultTextColor(Qt::white);
+    scene->addItem(elapsedTimeText);
+    int textWidth = 100;
+    elapsedTimeText->setPos(scene->width() - textWidth - 200, 0);
+
     QTimer *timeCheck = new QTimer();
-    int elapsedTime = 0; // Elapsed time counter
-    QObject::connect(timeCheck, &QTimer::timeout, [player, time, time3, timeCheck, view, scene, &elapsedTime, initialNumOfAttempts]() {
-        qDebug() << "Elapsed Time:" << elapsedTime;
-        qDebug() << "Initial Num of Attempts:" << initialNumOfAttempts;
-        qDebug() << "Player Num of Attempts:" << player->numOfAttempts;
-        elapsedTime += timeCheck->interval();
-        QGraphicsTextItem *elapsedTimeText = new QGraphicsTextItem();
-        QFont font;
-        font.setPointSize(14);
-        elapsedTimeText->setFont(font);
-        elapsedTimeText->setDefaultTextColor(Qt::white);
-        scene->addItem(elapsedTimeText);
-        int textWidth = 100;
-        elapsedTimeText->setPos(scene->width() - textWidth, 0);
+    // Timer to update stopwatch display
+    QTimer *stopwatchTimer = new QTimer();
+    QObject::connect(stopwatchTimer, &QTimer::timeout, [=]() {
+        // Calculate elapsed time since start
+        qint64 elapsedMs = startTime.msecsTo(QDateTime::currentDateTime());
+        int elapsedSec = elapsedMs / 1000; // Convert to seconds
 
-        QObject::connect(time, &QTimer::timeout, [elapsedTimeText, &elapsedTime]() {
-            elapsedTimeText->setPlainText(QString("Elapsed Time: %1 seconds").arg(elapsedTime / 1000)); // Update text with elapsed time in seconds
-        });
-        if (elapsedTime >= 30000 && player->numOfAttempts == initialNumOfAttempts) { // Check if 30 seconds have passed and numOfAttempts hasn't changed
-            time->stop(); // Stop creating enemies
-            time3->stop(); // Stop creating coins
+        qDebug() << "Elapsed Time:" << elapsedSec;
 
-            QGraphicsTextItem *gameOverText = new QGraphicsTextItem("Game Over");
-            QFont font;
-            font.setPointSize(30);
-            gameOverText->setFont(font);
-            gameOverText->setDefaultTextColor(Qt::white);
-            gameOverText->setPos((scene->width() - gameOverText->boundingRect().width()) / 2,
-                                 (scene->height() - gameOverText->boundingRect().height()) / 2);
-            scene->addItem(gameOverText);
+        elapsedTimeText->setPlainText(QString("Elapsed Time: %1 seconds").arg(elapsedSec));
+        if (elapsedSec >= 30) {
+            qDebug() << "Elapsed Time: " << elapsedSec;
+            qDebug() << "Initial Number of Attempts: " << initialNumOfAttempts;
+            qDebug() << "Current Number of Attempts: " << player->numOfAttempts;
 
-            // Close the window after 2 seconds
-            QTimer::singleShot(2000, view, &QGraphicsView::close);
+            if (player->numOfAttempts == initialNumOfAttempts) {
+                time->stop(); // Stop creating enemies
+                time3->stop(); // Stop creating coins
 
-            timeCheck->stop();
+                // Display "Game Over" message
+                QGraphicsTextItem *gameOverText = new QGraphicsTextItem("Game Over");
+                QFont gameOverFont;
+                gameOverFont.setPointSize(30); // Set font size
+                gameOverText->setFont(gameOverFont); // Apply font to the text item
+                gameOverText->setDefaultTextColor(Qt::white);
+                gameOverText->setPos((scene->width() - gameOverText->boundingRect().width()) / 2,
+                                     (scene->height() - gameOverText->boundingRect().height()) / 2);
+                scene->addItem(gameOverText);
+
+                // Close the window after 2 seconds
+                QTimer::singleShot(2000, view, &QGraphicsView::close);
+
+                timeCheck->stop();
+            }
         }
     });
+    stopwatchTimer->start(1000); // Update every second
     timeCheck->start(1000);
+
+
+
+
+    QPropertyAnimation *animation = new QPropertyAnimation(view, "horizontalScrollBar");
+
+    // Set the property name
+    animation->setPropertyName("value");
+
+    // Set the start and end values
+    animation->setStartValue(0);
+    animation->setEndValue(scene->width() - view->width());
+
+    // Set the duration of the animation
+    animation->setDuration(10000);
+
+    // Set the loop count to make the animation repeat infinitely
+    animation->setLoopCount(-1);
+
+
+    animation->start();
+
 }
 
 level1::~level1() {}

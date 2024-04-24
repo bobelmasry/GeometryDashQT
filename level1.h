@@ -1,9 +1,11 @@
 #ifndef LEVEL1_H
 #define LEVEL1_H
 
+
+#include <QAudioOutput>
 #include <QDialog>
 #include <QMediaPlayer>
-#include <QAudioOutput>
+#include <QPropertyAnimation>
 
 namespace Ui {
 class level1;
@@ -18,13 +20,10 @@ public:
     ~level1();
 
 private:
-    QAudioOutput* start_level = new QAudioOutput();
-    QMediaPlayer* start_level_audio = new QMediaPlayer();
-    QAudioOutput* steromadness= new QAudioOutput();
-    QMediaPlayer* level1_music= new QMediaPlayer();
-
-
-
+    QAudioOutput *start_level = new QAudioOutput();
+    QMediaPlayer *start_level_audio = new QMediaPlayer();
+    QAudioOutput *steromadness = new QAudioOutput();
+    QMediaPlayer *level1_music = new QMediaPlayer();
 };
 
 #endif // LEVEL1_H
