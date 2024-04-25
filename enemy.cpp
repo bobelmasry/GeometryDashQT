@@ -11,11 +11,8 @@ QList<Enemy*>Enemy::enemies;
 
 Enemy::Enemy(Player &player) : m_player(player) {
 
-
     enemies.append(this);
 
-
-    int randomX = QRandomGenerator::global()->bounded(1000, 1600);
     // hasRect == 0 means has rectangle
     int hasRect = QRandomGenerator::global()->bounded(0, 3);
     int randomRectHeight = QRandomGenerator::global()->bounded(30, 45);
@@ -59,7 +56,7 @@ Enemy::Enemy(Player &player) : m_player(player) {
 
     addToGroup(spikesGroup);
 
-    setPos(randomX, 610 - randomRectHeight);
+    setPos(1600, 610 - randomRectHeight);
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));

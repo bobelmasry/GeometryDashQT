@@ -5,6 +5,7 @@
 #include "enemy.h"
 #include "coin.h"
 #include <QGraphicsRectItem>
+#include <QPropertyAnimation>
 
 
 const qreal gravity = 15;
@@ -118,7 +119,7 @@ void Player::setPosition(qreal x, qreal y)
     setPos(x, y);
 }
 
-void Player::showAttempts(){
+/*void Player::showAttempts(){
     QGraphicsTextItem *attemptsText = new QGraphicsTextItem(QString("Attempt %1").arg(this->numOfAttempts));
 
     QFont font;
@@ -130,7 +131,7 @@ void Player::showAttempts(){
 
     int sceneWidth = scene()->width();
     int textWidth = attemptsText->boundingRect().width();
-    attemptsText->setPos((sceneWidth - textWidth) / 2, 50); // Adjust Y position as needed
+    attemptsText->setPos(this->x()-110,300 ); // Adjust Y position as needed
     scene()->addItem(attemptsText);
 
     // Remove the text item after 2 seconds
@@ -139,7 +140,43 @@ void Player::showAttempts(){
         delete attemptsText;
     });
     resetCoins();
+}*/
+
+void Player::showAttempts() {
+    QGraphicsTextItem *attemptsText = new QGraphicsTextItem(QString("Attempt %1").arg(this->numOfAttempts));
+
+    QFont font;
+    font.setPointSize(40);
+    font.setBold(true);
+    attemptsText->setFont(font);
+
+    attemptsText->setDefaultTextColor(Qt::white);
+
+    int textWidth = attemptsText->boundingRect().width();
+    int playerX = this->x(); // Get player's x position
+    attemptsText->setPos(playerX - textWidth / 2, this->y() - 200); // Position above the player
+    scene()->addItem(attemptsText);
+
+    // Create a QTimer to start moving the text item after a delay
+    QTimer::singleShot(1000, [=]() {
+        // Create a QTimer to update the position every 30 milliseconds
+        QTimer *timer = new QTimer(this);
+        connect(timer, &QTimer::timeout, [=]() {
+            attemptsText->moveBy(-15, 0); // Move the text item 15 pixels to the left
+            if (attemptsText->pos().x() + textWidth < 0) { // If the text item is out of scene
+                scene()->removeItem(attemptsText);
+                delete attemptsText;
+                timer->stop(); // Stop the timer
+                timer->deleteLater(); // Delete the timer
+            }
+        });
+        timer->start(30); // Start the timer with a 30-millisecond interval
+    });
+
+    resetCoins();
 }
+
+
 
 void Player::emitParticles()
 {
