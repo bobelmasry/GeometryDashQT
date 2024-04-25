@@ -4,7 +4,6 @@
 #include <QDebug>
 #include "enemy.h"
 #include "coin.h"
-#include "level1.h"
 #include <QGraphicsRectItem>
 
 
@@ -179,6 +178,8 @@ void Player::emitParticles()
     });
     moveTimer->start(10); // update the particle's position every 10 milliseconds
 }
+
+
 
 
 

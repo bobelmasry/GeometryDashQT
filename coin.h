@@ -11,8 +11,10 @@ class coin : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
 public:
     coin();
+    static QList<coin*> coins;
 public slots:
     void move();
+
 };
 
 #endif // COIN_H

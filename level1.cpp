@@ -6,6 +6,9 @@
 #include <QGraphicsRectItem>
 #include "player.h"
 #include <QGraphicsPixmapItem>
+#include <enemy.h>
+
+QMediaPlayer* level1::level1_music = nullptr;
 
 level1::level1()
 {
@@ -18,12 +21,17 @@ level1::level1()
     start_level->setVolume(50);
     start_level_audio->play();
 
+    // Initialize level1_music
+    level1_music = new QMediaPlayer();
+    level1_music->setSource(QUrl("qrc:/Sound/level1_music.mp3"));
+    level1_music->setAudioOutput(steromadness);
+    steromadness->setVolume(50);
+
     // Delay the level1_music audio
-    QTimer::singleShot(1000, this, [this]() {
-        level1_music->setSource(QUrl("qrc:/Sound/level1_music.mp3"));
-        level1_music->setAudioOutput(steromadness);
-        steromadness->setVolume(50);
-        level1_music->play();
+    QTimer::singleShot(1000, this, []() {
+        if (level1_music) {
+            level1_music->play();
+        }
     });
 
     QGraphicsView *view = new QGraphicsView(scene);
@@ -103,6 +111,11 @@ level1::level1()
         }
     });
     timeCheck->start(1000);
+}
+
+QMediaPlayer* level1::getLevel1Music()
+{
+    return level1_music;
 }
 
 level1::~level1() {}

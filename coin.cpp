@@ -5,7 +5,12 @@
 #include "player.h"
 #include <QGraphicsPixmapItem>
 
+QList<coin*>coin::coins;
+
 coin::coin() {
+
+    coins.append(this);
+
     setPixmap(QPixmap("://images/coin.png").scaled(100,100));
 
     int randomX = QRandomGenerator::global()->bounded(600, 800 - pixmap().width());
@@ -14,7 +19,7 @@ coin::coin() {
     // makes sure that coin isn't colliding with any enemies on spawn
     QList<QGraphicsItem*> colliding_items;
     do {
-        setPos(randomX, randomY);
+        setPos(randomX+1300, 500 );
         colliding_items = collidingItems();
         if (!colliding_items.isEmpty()) {
             randomX = QRandomGenerator::global()->bounded(400, 600 - pixmap().width());
@@ -24,16 +29,17 @@ coin::coin() {
 
     QTimer *timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
-    timer->start(60);
+    timer->start(30);
 }
 
 
 void coin::move() {
-    setPos(x() - 23, y());
+    setPos(x() - 15, y());
     QList<QGraphicsItem*> colliding_items = collidingItems();
 
     if (x() + pixmap().width() < pixmap().width()) {
         scene()->removeItem(this);
+        coins.removeOne(this);
         delete this;
         return;
     }
@@ -44,6 +50,7 @@ void coin::move() {
             player->increase();
                 scene()->removeItem(this);
 
+            coins.removeOne(this);
                 delete this;
                 return;
         }

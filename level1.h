@@ -1,6 +1,7 @@
 #ifndef LEVEL1_H
 #define LEVEL1_H
 
+#include "enemy.h"
 #include <QDialog>
 #include <QMediaPlayer>
 #include <QAudioOutput>
@@ -16,12 +17,15 @@ class level1 : public QDialog
 public:
     level1();
     ~level1();
+    static QMediaPlayer* getLevel1Music();
+    void setLevel1Music(QMediaPlayer *music);
+
 
 private:
     QAudioOutput* start_level = new QAudioOutput();
     QMediaPlayer* start_level_audio = new QMediaPlayer();
     QAudioOutput* steromadness= new QAudioOutput();
-    QMediaPlayer* level1_music= new QMediaPlayer();
+    static QMediaPlayer* level1_music;
 
 
 

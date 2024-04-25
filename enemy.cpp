@@ -3,9 +3,18 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QPolygonF>
+#include <level1.h>
+#include <coin.h>
 #include <QApplication>
 
+QList<Enemy*>Enemy::enemies;
+
 Enemy::Enemy(Player &player) : m_player(player) {
+
+
+    enemies.append(this);
+
+
     int randomX = QRandomGenerator::global()->bounded(1000, 1600);
     // hasRect == 0 means has rectangle
     int hasRect = QRandomGenerator::global()->bounded(0, 3);
@@ -61,14 +70,16 @@ Enemy::Enemy(Player &player) : m_player(player) {
     death_sound->setSource(QUrl("qrc:/Sound/death_sound.mp3"));
     death_sound->setAudioOutput(death_audio);
     death_audio->setVolume(50);
+
 }
 
 void Enemy::move() {
-    setPos(x() - 11.5, y());
+    setPos(x() - 15, y()); //change speed of spikes ya 7obal
     QList<QGraphicsItem*> colliding_items = collidingItems();
 
     if (x() + boundingRect().width() < boundingRect().width()) {
         scene()->removeItem(this);
+        enemies.removeOne(this);
         delete this;
         return;
     }
@@ -80,8 +91,49 @@ void Enemy::move() {
             m_player.setPosition(300,500);
             m_player.numOfAttempts++;
             m_player.showAttempts();
-            delete this;
+            player_hit();
             return;
         }
     }
 }
+
+void Enemy::player_hit()
+{
+    QMediaPlayer* level1_music = level1::getLevel1Music();
+    if (level1_music) {
+        level1_music->stop(); // Stop the music
+        QTimer::singleShot(1000, [level1_music]() {
+            level1_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+
+    }
+
+
+    foreach(Enemy*enemy, enemies){
+        if(enemy->scene())
+            enemy->scene()->removeItem(enemy);
+    delete enemy;
+    }
+
+    enemies.clear();
+
+    foreach(Enemy*enemy, enemies){
+        if(enemy->scene())
+            enemy->scene()->removeItem(enemy);
+        delete enemy;
+    }
+
+    enemies.clear();
+
+    foreach(coin*Coin,coin::coins){
+    if(Coin->scene())
+            Coin->scene()->removeItem(Coin);
+        delete Coin;
+    }
+    coin::coins.clear();
+
+
+
+}
+
+

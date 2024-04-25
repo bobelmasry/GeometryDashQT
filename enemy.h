@@ -13,13 +13,16 @@ class Enemy : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 public:
-    Enemy(Player &player);
+    Enemy(Player& player);
 public slots:
     void move();
+    void player_hit();
 private:
     QMediaPlayer* death_sound = nullptr;
     QAudioOutput* death_audio = nullptr;
-    Player &m_player;
+    Player& m_player;
+    static QList<Enemy*> enemies;
+
 };
 
 #endif // ENEMY_H
