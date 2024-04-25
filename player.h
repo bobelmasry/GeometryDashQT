@@ -2,20 +2,20 @@
 #define PLAYER_H
 
 #include <QGraphicsPixmapItem>
-#include <QObject>
-#include <QKeyEvent>
 #include <QGraphicsTextItem>
+#include <QKeyEvent>
 #include <QMessageBox>
-#include <QTimer>
+#include <QObject>
 #include <QPropertyAnimation>
+#include <QTimer>
 
 class Player : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
     int health;
     int coins;
-    QGraphicsTextItem* coinDisplay;
-    QMessageBox* msgBox;
+    QGraphicsTextItem *coinDisplay;
+    QMessageBox *msgBox;
     qreal yVelocity;
 
 public:
@@ -32,12 +32,14 @@ public slots:
     void setPosition(qreal x, qreal y);
     void showAttempts();
     void resetCoins();
+
 private:
     qreal angle;
-    QTimer* rotationTimer;
+    QTimer *rotationTimer;
     QPropertyAnimation *rotationAnimation;
-    QTimer* particleTimer;
+    QTimer *particleTimer;
     bool in_air;
+    QGraphicsTextItem *attemptsText;
 
 };
 
