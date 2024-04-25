@@ -17,6 +17,7 @@ public:
 public slots:
     void move();
     void player_hit();
+   static void deleteAll();
 private:
     QMediaPlayer* death_sound = nullptr;
     QAudioOutput* death_audio = nullptr;

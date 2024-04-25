@@ -4,14 +4,22 @@
 #include <QGraphicsView>
 #include <QTimer>
 #include <QGraphicsRectItem>
+#include "mainwindow.h"
 #include "player.h"
 #include <QGraphicsPixmapItem>
 #include <enemy.h>
+#include<coin.h>
+
+
 
 QMediaPlayer* level1::level1_music = nullptr;
 
+int level1::gamecounter=0;
+
 level1::level1()
 {
+
+
     QGraphicsScene *scene = new QGraphicsScene();
     scene->setSceneRect(0, 0, 1560, 870);
 
@@ -34,6 +42,7 @@ level1::level1()
         }
     });
 
+
     QGraphicsView *view = new QGraphicsView(scene);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -55,63 +64,74 @@ level1::level1()
     player->setPos(300,400);
     view->setFocus();
 
-    // Initial value of numOfAttempts
-    int initialNumOfAttempts = player->numOfAttempts;
+    view->showFullScreen();
+
+    QTimer *time = new QTimer();
+    QObject::connect(time, SIGNAL(timeout()), player, SLOT(createEnemy()));
+    time->start(1000);
 
     QTimer *time2 = new QTimer();
     QObject::connect(time2, SIGNAL(timeout()), player, SLOT(advance()));
     time2->start(50);
 
-    QTimer *time = new QTimer();
-    QObject::connect(time, SIGNAL(timeout()), player, SLOT(createEnemy()));
-    time->start(1500);
-
     QTimer *time3 = new QTimer();
-    QObject::connect(time, SIGNAL(timeout()), player, SLOT(createCoin()));
+    QObject::connect(time3, SIGNAL(timeout()), player, SLOT(createCoin()));
     time3->start(1500);
-    view->showFullScreen();
 
-    // Timer to check if numOfAttempts hasn't changed for 30 seconds
-    QTimer *timeCheck = new QTimer();
-    int elapsedTime = 0; // Elapsed time counter
-    QObject::connect(timeCheck, &QTimer::timeout, [player, time, time3, timeCheck, view, scene, &elapsedTime, initialNumOfAttempts]() {
-        qDebug() << "Elapsed Time:" << elapsedTime;
-        qDebug() << "Initial Num of Attempts:" << initialNumOfAttempts;
-        qDebug() << "Player Num of Attempts:" << player->numOfAttempts;
-        elapsedTime += timeCheck->interval();
+     QTimer *timeCheck = new QTimer();
+     timeCheck->start(1000);
+
+
+    QObject::connect(timeCheck, &QTimer::timeout, [ time, time3, timeCheck, view, scene]() {
+
         QGraphicsTextItem *elapsedTimeText = new QGraphicsTextItem();
         QFont font;
         font.setPointSize(14);
         elapsedTimeText->setFont(font);
         elapsedTimeText->setDefaultTextColor(Qt::white);
         scene->addItem(elapsedTimeText);
-        int textWidth = 100;
-        elapsedTimeText->setPos(scene->width() - textWidth, 0);
-
-        QObject::connect(time, &QTimer::timeout, [elapsedTimeText, &elapsedTime]() {
-            elapsedTimeText->setPlainText(QString("Elapsed Time: %1 seconds").arg(elapsedTime / 1000)); // Update text with elapsed time in seconds
+        int textWidth = 200; // Adjust text width according to your scene
+        elapsedTimeText->setPos(scene->width() - textWidth - 10+1000, 10); // Adjust
+        QObject::connect(time, &QTimer::timeout, [elapsedTimeText]() {
+            gamecounter++;
+            elapsedTimeText->setPlainText(QString("Elapsed Time: %1 seconds").arg(gamecounter));
         });
-        if (elapsedTime >= 30000 && player->numOfAttempts == initialNumOfAttempts) { // Check if 30 seconds have passed and numOfAttempts hasn't changed
+
+        if (gamecounter >= 400)
+
+        {
             time->stop(); // Stop creating enemies
             time3->stop(); // Stop creating coins
-
-            QGraphicsTextItem *gameOverText = new QGraphicsTextItem("Game Over");
-            QFont font;
-            font.setPointSize(30);
-            gameOverText->setFont(font);
-            gameOverText->setDefaultTextColor(Qt::white);
-            gameOverText->setPos((scene->width() - gameOverText->boundingRect().width()) / 2,
-                                 (scene->height() - gameOverText->boundingRect().height()) / 2);
-            scene->addItem(gameOverText);
-
-            // Close the window after 2 seconds
-            QTimer::singleShot(2000, view, &QGraphicsView::close);
-
             timeCheck->stop();
+            gamecounter=0;
+
+            QTimer::singleShot(3000, [&]()
+            {
+                QGraphicsTextItem *gameOverText = new QGraphicsTextItem("Level Complete!");
+                QFont font;
+                font.setPointSize(30);
+                gameOverText->setFont(font);
+                gameOverText->setDefaultTextColor(Qt::white);
+                gameOverText->setPos((scene->width() - gameOverText->boundingRect().width()) / 2,
+                                     (scene->height() - gameOverText->boundingRect().height()) / 2);
+                scene->addItem(gameOverText);
+
+                // Close the window after 3 seconds
+                QTimer::singleShot(3000, view, &QGraphicsView::close);
+                timeCheck->stop();
+                QTimer::singleShot(3000, [&]() {
+                    MainWindow *windowObj = new MainWindow();
+                    windowObj->show();
+                    level1_music->stop();
+                });
+            });
         }
+
     });
-    timeCheck->start(1000);
+
+
 }
+
 
 QMediaPlayer* level1::getLevel1Music()
 {
@@ -119,3 +139,8 @@ QMediaPlayer* level1::getLevel1Music()
 }
 
 level1::~level1() {}
+
+void level1::level1_complete()
+{
+
+}

@@ -119,29 +119,6 @@ void Player::setPosition(qreal x, qreal y)
     setPos(x, y);
 }
 
-/*void Player::showAttempts(){
-    QGraphicsTextItem *attemptsText = new QGraphicsTextItem(QString("Attempt %1").arg(this->numOfAttempts));
-
-    QFont font;
-    font.setPointSize(40);
-    font.setBold(true);
-    attemptsText->setFont(font);
-
-    attemptsText->setDefaultTextColor(Qt::white);
-
-    int sceneWidth = scene()->width();
-    int textWidth = attemptsText->boundingRect().width();
-    attemptsText->setPos(this->x()-110,300 ); // Adjust Y position as needed
-    scene()->addItem(attemptsText);
-
-    // Remove the text item after 2 seconds
-    QTimer::singleShot(2000, [=]() {
-        scene()->removeItem(attemptsText);
-        delete attemptsText;
-    });
-    resetCoins();
-}*/
-
 void Player::showAttempts() {
     QGraphicsTextItem *attemptsText = new QGraphicsTextItem(QString("Attempt %1").arg(this->numOfAttempts));
 

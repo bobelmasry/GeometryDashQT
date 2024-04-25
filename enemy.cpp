@@ -89,6 +89,8 @@ void Enemy::move() {
             m_player.numOfAttempts++;
             m_player.showAttempts();
             player_hit();
+            level1::gamecounter=0;
+
             return;
         }
     }
@@ -114,14 +116,6 @@ void Enemy::player_hit()
 
     enemies.clear();
 
-    foreach(Enemy*enemy, enemies){
-        if(enemy->scene())
-            enemy->scene()->removeItem(enemy);
-        delete enemy;
-    }
-
-    enemies.clear();
-
     foreach(coin*Coin,coin::coins){
     if(Coin->scene())
             Coin->scene()->removeItem(Coin);
@@ -132,5 +126,17 @@ void Enemy::player_hit()
 
 
 }
+
+void Enemy::deleteAll()
+{
+    foreach(Enemy*enemy, enemies){
+        if(enemy->scene())
+            enemy->scene()->removeItem(enemy);
+        delete enemy;
+    }
+
+    enemies.clear();
+}
+
 
 

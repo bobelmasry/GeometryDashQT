@@ -1,10 +1,11 @@
 #ifndef LEVEL1_H
 #define LEVEL1_H
 
-#include "enemy.h"
+#include "qtimer.h"
 #include <QDialog>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+
 
 namespace Ui {
 class level1;
@@ -19,9 +20,12 @@ public:
     ~level1();
     static QMediaPlayer* getLevel1Music();
     void setLevel1Music(QMediaPlayer *music);
-
+    QTimer *gametimer=new QTimer();
+    static int gamecounter;
+    void level1_complete();
 
 private:
+    Ui::level1 *ui;
     QAudioOutput* start_level = new QAudioOutput();
     QMediaPlayer* start_level_audio = new QMediaPlayer();
     QAudioOutput* steromadness= new QAudioOutput();

@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -33,6 +36,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="level2Button">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -48,8 +54,8 @@
    <widget class="QPushButton" name="itemShopButton">
     <property name="geometry">
      <rect>
-      <x>1550</x>
-      <y>640</y>
+      <x>1280</x>
+      <y>520</y>
       <width>80</width>
       <height>24</height>
      </rect>
