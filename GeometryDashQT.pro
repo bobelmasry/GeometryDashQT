@@ -17,6 +17,7 @@ SOURCES += \
     level2.cpp \
     main.cpp \
     mainwindow.cpp \
+    platform.cpp \
     player.cpp
 
 HEADERS += \
@@ -26,6 +27,7 @@ HEADERS += \
     level1.h \
     level2.h \
     mainwindow.h \
+    platform.h \
     player.h
 
 FORMS += \
