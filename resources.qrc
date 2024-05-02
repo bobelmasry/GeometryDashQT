@@ -14,5 +14,8 @@
         <file>images/level2_floor.png</file>
         <file>Sound/level1_music.mp3</file>
         <file>images/data.txt</file>
+        <file>images/Cube001.png</file>
+        <file>images/Cube002.png</file>
+        <file>images/Cube012.png</file>
     </qresource>
 </RCC>
