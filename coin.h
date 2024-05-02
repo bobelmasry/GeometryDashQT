@@ -12,6 +12,7 @@ class coin : public QObject, public QGraphicsPixmapItem
 public:
     coin();
     static QList<coin*> coins;
+    void updateTextFile();
 public slots:
     void move();
 
