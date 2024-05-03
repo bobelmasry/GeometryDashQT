@@ -6,52 +6,104 @@
 #include <QDebug>
 #include <QLabel>
 #include <QTextEdit>
+#include <QVBoxLayout>
 
 
 itemShopWindow::itemShopWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::itemShopWindow)
 {
+    ui->setupUi(this);
     QFile file("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << file.errorString();
         return;
     }
-
     QTextStream in(&file);
-    QString line = in.readLine(); // read and discard the first line
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList fields = line.split(',');
+    QString line = in.readLine(); // read and discard the first line as name of field
 
-        if (fields.size() < 5) {
-            qDebug() << "Invalid data format";
-            continue;
-        }
+    line = in.readLine();
+    QStringList fields = line.split(',');
 
-        // extracting fields
-        QString skinName = fields[0];
-        QString price = fields[1];
-        QString isOwned = fields[2];
-        QString isEquipped = fields[3];
-        QString imagePath = fields[4].trimmed(); // to remove leading and trailing whitespace
+    // Extracting fields for skin 1
+    QString skin1price = fields[1];
+    QString skin1isOwned = fields[2];
+    QString skin1isEquipped = fields[3];
+    QString skin1imagePath = fields[4].trimmed(); // to remove leading and trailing whitespace
+    skin1imagePath = skin1imagePath.replace("\"", "");
 
-        // displaying image
-        QLabel *imageLabel = new QLabel;
-        imagePath = imagePath.replace("\"", "");
-        qDebug() << imagePath << '\n';
-        QPixmap pixmap(imagePath);
-        imageLabel->setPixmap(pixmap.scaled(100, 100));
+    qDebug() << skin1price << "\n";
+    qDebug() << skin1isOwned << "\n";
+    qDebug() << skin1isEquipped << "\n";
+    qDebug() << skin1imagePath << "\n";
 
-        // displaying details
-        QTextEdit *detailsTextEdit = new QTextEdit;
-        detailsTextEdit->setReadOnly(true);
-        QString details = QString("Skin Name: %1\nPrice: %2\nOwned: %3\nEquipped: %4").arg(skinName, price, isOwned, isEquipped);
-        detailsTextEdit->setPlainText(details);
-    }
+
+    line = in.readLine();
+    fields = line.split(',');
+
+    // Extracting fields for skin 2
+    QString skin2price = fields[1];
+    QString skin2isOwned = fields[2];
+    QString skin2isEquipped = fields[3];
+    QString skin2imagePath = fields[4].trimmed(); // to remove leading and trailing whitespace
+    skin2imagePath = skin2imagePath.replace("\"", "");
+
+
+    line = in.readLine();
+    fields = line.split(',');
+
+    // Extracting fields for skin 3
+    QString skin3price = fields[1];
+    QString skin3isOwned = fields[2];
+    QString skin3isEquipped = fields[3];
+    QString skin3imagePath = fields[4].trimmed(); // to remove leading and trailing whitespace
+    skin3imagePath = skin3imagePath.replace("\"", "");
+    QPixmap skin3Pixmap = QPixmap(skin3imagePath).scaled(100, 100);
+    ui->skin3Label->setPixmap(skin3Pixmap);
 
     file.close();
-    ui->setupUi(this);
+
+    if (skin1isOwned == "FALSE"){
+        ui->skin1Details->setText(skin1price);
+        ui->skin1Button->setText("Buy");
+    }
+    else {
+        if (skin1isOwned == "TRUE") {
+            ui->skin1Button->setText("Equip");
+        }
+        else {
+            ui->skin1Button->setText("Unequip");
+        }
+    }
+
+    if (skin2isOwned == "FALSE"){
+        ui->skin2Details->setText(skin2price);
+        ui->skin2Button->setText("Buy");
+    }
+    else {
+        if (skin2isOwned == "TRUE") {
+            ui->skin2Button->setText("Equip");
+        }
+        else {
+            ui->skin2Button->setText("Unequip");
+        }
+    }
+
+
+    if (skin3isOwned == "FALSE"){
+        ui->skin3Details->setText(skin3price);
+        ui->skin3Button->setText("Buy");
+    }
+    else {
+        if (skin3isOwned == "TRUE") {
+            ui->skin3Button->setText("Equip");
+        }
+        else {
+            ui->skin3Button->setText("Unequip");
+        }
+    }
+
+
 }
 itemShopWindow::~itemShopWindow()
 {
@@ -65,4 +117,57 @@ void itemShopWindow::on_backButton_clicked()
     windowObj->show();
 
 }
+
+
+void itemShopWindow::on_skin1Button_clicked()
+{
+    QString buttonText = ui->skin1Button->text();
+    qDebug() << "Button text: " << buttonText;
+
+    if (buttonText == "Equip" || buttonText == "Unequip"){
+        // Read the contents of the file
+        QFile file("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
+        if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            qDebug() << file.errorString();
+            return;
+        }
+
+        QTextStream in(&file);
+        QStringList lines;
+        QString line;
+        while (!(line = in.readLine()).isNull()) {
+            if (line.contains("Crusher")) {
+                // Modify the line for Crusher to set isEquipped based on buttonText
+                QStringList fields = line.split(',');
+                if (buttonText == "Equip") {
+                    fields[3] = "TRUE"; // isEquipped is the fourth field
+                    ui->skin1Button->setText("Unequip");
+                } else if (buttonText == "Unequip" && fields[3] == "TRUE") {
+                    fields[3] = "FALSE"; // isEquipped is the fourth field
+                    ui->skin1Button->setText("Equip");
+                }
+                line = fields.join(',');
+            }
+            lines.append(line);
+        }
+
+        // Close the file after reading
+        file.close();
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+            qDebug() << file.errorString();
+            return;
+        }
+
+        QTextStream out(&file);
+        for (const QString& line : qAsConst(lines)) {
+            out << line << '\n';
+        }
+
+        // Close the file after writing
+        file.close();
+    }
+
+}
+
+
 

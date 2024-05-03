@@ -18,6 +18,8 @@ public:
 private slots:
     void on_backButton_clicked();
 
+    void on_skin1Button_clicked();
+
 private:
     Ui::itemShopWindow *ui;
 };
