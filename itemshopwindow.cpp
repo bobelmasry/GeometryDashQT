@@ -165,7 +165,63 @@ void itemShopWindow::on_skin1Button_clicked()
 
         // Close the file after writing
         file.close();
+    } else {
+        // Case where Button Text is "Buy"
+        QFile coinFile("D://python_projects//other shit//CS//GeometryDashQT//images//data.txt");
+        if (coinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            qDebug() << "Coin file opened successfully.";
+            QTextStream coinIn(&coinFile);
+            int coins = coinIn.readLine().toInt();
+
+            QFile skinFile("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
+            if (skinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+                qDebug() << "Skin file opened successfully.";
+                QTextStream skinStream(&skinFile);
+                QStringList lines;
+                QString line;
+                while (!(line = skinStream.readLine()).isNull()) {
+                    qDebug() << line;
+                    if (line.contains("Crusher")) { // Modify the line for Crusher
+                        QStringList fields = line.split(',');
+                        int price = fields[1].toInt(); // Assuming price is the second field
+                        if (coins >= price) {
+                            coins -= price; // Deduct the price from coins
+                            fields[2] = "TRUE"; // Set isOwned to TRUE
+                            ui->errorLabel->setText("Crusher Skin Bought!");
+                            ui->skin1Button->setText("Equip");
+                        } else {
+                            ui->errorLabel->setText("Not Enough Coins!");
+                            skinFile.close();
+                            coinFile.close();
+                            return;
+                        }
+                        line = fields.join(',');
+                    }
+                    lines.append(line);
+                }
+                // Write the modified lines back to the CSV file
+                skinFile.seek(0);
+                skinFile.resize(0); // Clear the file
+                QTextStream skinOut(&skinFile);
+                for (const QString& line : qAsConst(lines)) {
+                    skinOut << line << '\n';
+                }
+                skinFile.close();
+            } else {
+                qDebug() << "Failed to open skin file for reading and writing. Error:" << skinFile.errorString();
+            }
+
+            // Write the updated coins back to the coin file
+            coinFile.seek(0);
+            coinFile.resize(0);
+            QTextStream coinOut(&coinFile);
+            coinOut << coins;
+            coinFile.close();
+        } else {
+            qDebug() << "Failed to open coin file for reading and writing. Error:" << coinFile.errorString();
+        }
     }
+
 
 }
 
