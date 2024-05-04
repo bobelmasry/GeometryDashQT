@@ -103,6 +103,13 @@ itemShopWindow::itemShopWindow(QWidget *parent)
         }
     }
 
+    QFile coinFile("D://python_projects//other shit//CS//GeometryDashQT//images//data.txt");
+    if (coinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        qDebug() << "Coin file opened successfully.";
+        QTextStream coinIn(&coinFile);
+        int coins = coinIn.readLine().toInt();
+        ui->coinLabel->setText(QString::number(coins));
+    }
 
 }
 itemShopWindow::~itemShopWindow()
