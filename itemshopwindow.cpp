@@ -143,9 +143,9 @@ void itemShopWindow::on_skin1Button_clicked()
         QStringList lines;
         QString line;
         while (!(line = in.readLine()).isNull()) {
-            if (line.contains("Crusher")) {
+            QStringList fields = line.split(',');
+            if (fields[0] == "Crusher") {
                 // Modify the line for Crusher to set isEquipped based on buttonText
-                QStringList fields = line.split(',');
                 if (buttonText == "Equip") {
                     fields[3] = "TRUE"; // isEquipped is the fourth field
                     ui->skin1Button->setText("Unequip");
@@ -153,8 +153,13 @@ void itemShopWindow::on_skin1Button_clicked()
                     fields[3] = "FALSE"; // isEquipped is the fourth field
                     ui->skin1Button->setText("Equip");
                 }
-                line = fields.join(',');
+            } else {
+                // Set isEquipped to FALSE for all other skins
+                fields[3] = "FALSE"; // isEquipped is the fourth field
+                ui->skin2Button->setText("Equip");
+                ui->skin3Button->setText("Equip");
             }
+            line = fields.join(',');
             lines.append(line);
         }
 
@@ -233,4 +238,226 @@ void itemShopWindow::on_skin1Button_clicked()
 }
 
 
+
+
+void itemShopWindow::on_skin2Button_clicked()
+{
+    QString buttonText = ui->skin2Button->text();
+    qDebug() << "Button text: " << buttonText;
+
+    if (buttonText == "Equip" || buttonText == "Unequip"){
+        // Read the contents of the file
+        QFile file("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
+        if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            qDebug() << file.errorString();
+            return;
+        }
+
+        QTextStream in(&file);
+        QStringList lines;
+        QString line;
+        while (!(line = in.readLine()).isNull()) {
+            QStringList fields = line.split(',');
+            if (fields[0] == "Destroyer") {
+                // Modify the line for Destroyer to set isEquipped based on buttonText
+                if (buttonText == "Equip") {
+                    fields[3] = "TRUE"; // isEquipped is the fourth field
+                    ui->skin2Button->setText("Unequip");
+                } else if (buttonText == "Unequip" && fields[3] == "TRUE") {
+                    fields[3] = "FALSE"; // isEquipped is the fourth field
+                    ui->skin2Button->setText("Equip");
+                }
+            } else {
+                // Set isEquipped to FALSE for all other skins
+                fields[3] = "FALSE"; // isEquipped is the fourth field
+                ui->skin1Button->setText("Equip");
+                ui->skin3Button->setText("Equip");
+            }
+            line = fields.join(',');
+            lines.append(line);
+        }
+
+        // Close the file after reading
+        file.close();
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+            qDebug() << file.errorString();
+            return;
+        }
+
+        QTextStream out(&file);
+        for (const QString& line : qAsConst(lines)) {
+            out << line << '\n';
+        }
+
+        // Close the file after writing
+        file.close();
+
+    } else {
+        // Case where Button Text is "Buy"
+        QFile coinFile("D://python_projects//other shit//CS//GeometryDashQT//images//data.txt");
+        if (coinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            qDebug() << "Coin file opened successfully.";
+            QTextStream coinIn(&coinFile);
+            int coins = coinIn.readLine().toInt();
+
+            QFile skinFile("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
+            if (skinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+                qDebug() << "Skin file opened successfully.";
+                QTextStream skinStream(&skinFile);
+                QStringList lines;
+                QString line;
+                while (!(line = skinStream.readLine()).isNull()) {
+                    qDebug() << line;
+                    if (line.contains("Destroyer")) { // Modify the line for Destroyer
+                        QStringList fields = line.split(',');
+                        int price = fields[1].toInt(); // Assuming price is the second field
+                        if (coins >= price) {
+                            coins -= price; // Deduct the price from coins
+                            fields[2] = "TRUE"; // Set isOwned to TRUE
+                            ui->errorLabel->setText("Destroyer Skin Bought!");
+                            ui->skin2Button->setText("Equip");
+                        } else {
+                            ui->errorLabel->setText("Not Enough Coins!");
+                            skinFile.close();
+                            coinFile.close();
+                            return;
+                        }
+                        line = fields.join(',');
+                    }
+                    lines.append(line);
+                }
+                // Write the modified lines back to the CSV file
+                skinFile.seek(0);
+                skinFile.resize(0); // Clear the file
+                QTextStream skinOut(&skinFile);
+                for (const QString& line : qAsConst(lines)) {
+                    skinOut << line << '\n';
+                }
+                skinFile.close();
+            } else {
+                qDebug() << "Failed to open skin file for reading and writing. Error:" << skinFile.errorString();
+            }
+
+            // Write the updated coins back to the coin file
+            coinFile.seek(0);
+            coinFile.resize(0);
+            QTextStream coinOut(&coinFile);
+            coinOut << coins;
+            coinFile.close();
+        } else {
+            qDebug() << "Failed to open coin file for reading and writing. Error:" << coinFile.errorString();
+        }
+    }
+}
+
+
+void itemShopWindow::on_skin3Button_clicked()
+{
+    QString buttonText = ui->skin3Button->text();
+    qDebug() << "Button text: " << buttonText;
+
+    if (buttonText == "Equip" || buttonText == "Unequip"){
+        // Read the contents of the file
+        QFile file("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
+        if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            qDebug() << file.errorString();
+            return;
+        }
+
+        QTextStream in(&file);
+        QStringList lines;
+        QString line;
+        while (!(line = in.readLine()).isNull()) {
+            QStringList fields = line.split(',');
+            if (fields[0] == "Bob") {
+                // Modify the line for Bob to set isEquipped based on buttonText
+                if (buttonText == "Equip") {
+                    fields[3] = "TRUE"; // isEquipped is the fourth field
+                    ui->skin3Button->setText("Unequip");
+                } else if (buttonText == "Unequip" && fields[3] == "TRUE") {
+                    fields[3] = "FALSE"; // isEquipped is the fourth field
+                    ui->skin3Button->setText("Equip");
+                }
+            } else {
+                // Set isEquipped to FALSE for all other skins
+                fields[3] = "FALSE"; // isEquipped is the fourth field
+                ui->skin1Button->setText("Equip");
+                ui->skin2Button->setText("Equip");
+            }
+            line = fields.join(',');
+            lines.append(line);
+        }
+
+        // Close the file after reading
+        file.close();
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+            qDebug() << file.errorString();
+            return;
+        }
+
+        QTextStream out(&file);
+        for (const QString& line : qAsConst(lines)) {
+            out << line << '\n';
+        }
+
+        // Close the file after writing
+        file.close();
+
+    } else {
+        // Case where Button Text is "Buy"
+        QFile coinFile("D://python_projects//other shit//CS//GeometryDashQT//images//data.txt");
+        if (coinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            qDebug() << "Coin file opened successfully.";
+            QTextStream coinIn(&coinFile);
+            int coins = coinIn.readLine().toInt();
+
+            QFile skinFile("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
+            if (skinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
+                qDebug() << "Skin file opened successfully.";
+                QTextStream skinStream(&skinFile);
+                QStringList lines;
+                QString line;
+                while (!(line = skinStream.readLine()).isNull()) {
+                    qDebug() << line;
+                    if (line.contains("Bob")) { // Modify the line for Bob
+                        QStringList fields = line.split(',');
+                        int price = fields[1].toInt(); // Assuming price is the second field
+                        if (coins >= price) {
+                            coins -= price; // Deduct the price from coins
+                            fields[2] = "TRUE"; // Set isOwned to TRUE
+                            ui->errorLabel->setText("Bob Skin Bought!");
+                            ui->skin3Button->setText("Equip");
+                        } else {
+                            ui->errorLabel->setText("Not Enough Coins!");
+                            skinFile.close();
+                            coinFile.close();
+                            return;
+                        }
+                        line = fields.join(',');
+                    }
+                    lines.append(line);
+                }
+                // Write the modified lines back to the CSV file
+                skinFile.seek(0);
+                skinFile.resize(0); // Clear the file
+                QTextStream skinOut(&skinFile);
+                for (const QString& line : qAsConst(lines)) {
+                    skinOut << line << '\n';
+                }
+                skinFile.close();
+            } else {
+                qDebug() << "Failed to open skin file for reading and writing. Error:" << skinFile.errorString();
+            }
+
+            // Write the updated coins back to the coin file
+            coinFile.seek(0);
+            coinFile.resize(0);
+            QTextStream coinOut(&coinFile);
+            coinOut << coins;
+            coinFile.close();
+        } else {
+            qDebug() << "Failed to open coin file for reading and writing. Error:" << coinFile.errorString();
+        }
+    }
+}
 

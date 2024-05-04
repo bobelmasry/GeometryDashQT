@@ -20,6 +20,10 @@ private slots:
 
     void on_skin1Button_clicked();
 
+    void on_skin2Button_clicked();
+
+    void on_skin3Button_clicked();
+
 private:
     Ui::itemShopWindow *ui;
 };
