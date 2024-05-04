@@ -6,17 +6,41 @@
 #include "coin.h"
 #include <QGraphicsRectItem>
 #include <QPropertyAnimation>
+#include <QFile>
 
 
 const qreal gravity = 15;
 const qreal jumpVelocity = -85;
 
-Player::Player(QGraphicsScene *scene) : QGraphicsRectItem(), health(1), coins(0), yVelocity(0) {
-    setRect(0, 0, 75, 75);
+Player::Player(QGraphicsScene *scene) : QGraphicsPixmapItem(), health(1), coins(0), yVelocity(0) {
+    QFile file(":/images/skinData.csv");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << file.errorString();
+        return;
+    }
 
-    setBrush(Qt::red);
+    QTextStream in(&file);
+    QString line;
+    QString equippedSkinImagePath;
 
-    setFlag(QGraphicsItem::ItemIsFocusable);
+    while (!(line = in.readLine()).isNull()) {
+        QStringList fields = line.split(',');
+        if (fields[3] == "TRUE") { // Check if the skin is equipped
+            equippedSkinImagePath = fields[4].trimmed();
+            equippedSkinImagePath = equippedSkinImagePath.replace("\"", "");
+            break;
+        }
+    }
+
+    file.close();
+
+    // Set the pixmap using the image path of the equipped skin
+    qDebug() << equippedSkinImagePath;
+    if (!equippedSkinImagePath.isEmpty()) {
+        setPixmap(QPixmap(equippedSkinImagePath).scaled(100, 100));
+    } else {
+        qDebug() << "No skin is currently equipped.";
+    }    setFlag(QGraphicsItem::ItemIsFocusable);
 
     setFocus();
 
@@ -62,8 +86,8 @@ void Player::advance()
         if (newY < 0) {
             newY = 0;
             yVelocity = 0;
-        } else if (newY > sceneHeight - rect().height() - 200) {
-            newY = sceneHeight - rect().height() - 200;
+        } else if (newY > sceneHeight - pixmap().height() - 200) {
+            newY = sceneHeight - pixmap().height() - 200;
             yVelocity = 0;
             in_air=false;
             emitParticles();
@@ -157,7 +181,7 @@ void Player::showAttempts() {
 
 void Player::emitParticles()
 {
-    qreal particleY = y() + rect().height(); // y coordinate for all particles (bottom of the player)
+    qreal particleY = y() + pixmap().height(); // y coordinate for all particles (bottom of the player)
     qreal particleSize = QRandomGenerator::global()->bounded(5, 15); // randomize the size of the particles
 
     QGraphicsRectItem *particle = new QGraphicsRectItem(0, 0, particleSize, particleSize); // create a particle
