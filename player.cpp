@@ -39,8 +39,9 @@ Player::Player(QGraphicsScene *scene) : QGraphicsPixmapItem(), health(1), coins(
     if (!equippedSkinImagePath.isEmpty()) {
         setPixmap(QPixmap(equippedSkinImagePath).scaled(100, 100));
     } else {
-        qDebug() << "No skin is currently equipped.";
-    }    setFlag(QGraphicsItem::ItemIsFocusable);
+        setPixmap(QPixmap(":/images/coin.png").scaled(100, 100));
+        //qDebug() << "No skin is currently equipped.";
+    }    //setFlag(QGraphicsItem::ItemIsFocusable);
 
     setFocus();
 
@@ -216,9 +217,3 @@ void Player::emitParticles()
     });
     moveTimer->start(10); // update the particle's position every 10 milliseconds
 }
-
-
-
-
-
-
