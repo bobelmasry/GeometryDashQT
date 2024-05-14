@@ -41,8 +41,8 @@ Player::Player(QGraphicsScene *scene) : QGraphicsPixmapItem(), health(1), coins(
     } else {
         setPixmap(QPixmap(":/images/coin.png").scaled(100, 100));
         //qDebug() << "No skin is currently equipped.";
-    }    //setFlag(QGraphicsItem::ItemIsFocusable);
-
+    }
+    setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
 
     coinDisplay = new QGraphicsTextItem();
