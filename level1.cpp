@@ -84,17 +84,8 @@ level1::level1()
 
     QObject::connect(timeCheck, &QTimer::timeout, [ time, time3, timeCheck, view, scene]() {
 
-        QGraphicsTextItem *elapsedTimeText = new QGraphicsTextItem();
-        QFont font;
-        font.setPointSize(14);
-        elapsedTimeText->setFont(font);
-        elapsedTimeText->setDefaultTextColor(Qt::white);
-        scene->addItem(elapsedTimeText);
-        int textWidth = 200; // Adjust text width according to your scene
-        elapsedTimeText->setPos(scene->width() - textWidth - 10+1000, 10); // Adjust
-        QObject::connect(time, &QTimer::timeout, [elapsedTimeText]() {
+        QObject::connect(time, &QTimer::timeout, []() {
             gamecounter++;
-            elapsedTimeText->setPlainText(QString("Elapsed Time: %1 seconds").arg(gamecounter));
         });
 
         if (gamecounter >= 400)
