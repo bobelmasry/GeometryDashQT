@@ -18,5 +18,6 @@
         <file>images/Cube002.png</file>
         <file>images/Cube012.png</file>
         <file>images/skinData.csv</file>
+        <file>images/square.png</file>
     </qresource>
 </RCC>
