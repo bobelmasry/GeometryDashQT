@@ -3,15 +3,18 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QPolygonF>
-#include <level1.h>
+#include "level1.h"
 #include <coin.h>
 #include <QApplication>
 
 QList<Enemy*>Enemy::enemies;
 
+int Enemy::continous_enemies=0;
+
 Enemy::Enemy(Player &player) : m_player(player) {
 
     enemies.append(this);
+
 
     // hasRect == 0 means has rectangle
     int hasRect = QRandomGenerator::global()->bounded(0, 3);
@@ -68,6 +71,21 @@ Enemy::Enemy(Player &player) : m_player(player) {
     death_sound->setAudioOutput(death_audio);
     death_audio->setVolume(50);
 
+
+
+    ////checking game over sequence based on how many eneimes have been continously created
+
+    if(++continous_enemies<80)
+    {
+        continous_enemies++;
+        qDebug()<<continous_enemies;
+    }
+
+    else if(continous_enemies>80)
+    {
+        level1::level_complete();
+    }
+
 }
 
 void Enemy::move() {
@@ -89,7 +107,6 @@ void Enemy::move() {
             m_player.numOfAttempts++;
             m_player.showAttempts();
             player_hit();
-            level1::gamecounter=0;
 
             return;
         }
@@ -107,6 +124,7 @@ void Enemy::player_hit()
 
     }
 
+    continous_enemies=0;
 
     foreach(Enemy*enemy, enemies){
         if(enemy->scene())

@@ -35,8 +35,6 @@ void Platform::move() {
         death_sound->play();
         m_player->numOfAttempts++;
         m_player->showAttempts();
-        level1::gamecounter=0;
-
         scene()->removeItem(m_player);
         delete m_player;
     }

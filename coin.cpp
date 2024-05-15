@@ -49,7 +49,7 @@ void coin::updateTextFile() {
         file.close();
         qDebug() << "File closed.";
     } else {
-        qDebug() << "Failed to open file for reading and writing. Error:" << file.errorString();
+        //qDebug() << "Failed to open file for reading and writing. Error:" << file.errorString();
     }
 
 }
