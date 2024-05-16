@@ -14,6 +14,8 @@ Platform::Platform(qreal x, qreal y, qreal width, qreal height, Player *player)
     setPen(QPen(Qt::white));
     platforms.append(this);
 
+
+
     QTimer *movement_timer = new QTimer(this);
     connect(movement_timer, SIGNAL(timeout()), this, SLOT(move()));
     movement_timer->start(30);
