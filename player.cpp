@@ -127,8 +127,9 @@ void Player::createCoin()
 
 void Player::createPlatform()
 {
-    Platform *block = new Platform(1600, 590, 75, 75, this);
+    Platform *block = new Platform();
     scene()->addItem(block);
+    qDebug() << "Platform Created.";
 }
 bool Player::isInAir() const
 {
