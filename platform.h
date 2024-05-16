@@ -1,16 +1,18 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
+#include <QGraphicsItemGroup>
 #include <QGraphicsRectItem>
 #include <QMediaPlayer>
 #include <QObject>
+#include <QRandomGenerator>
 
 class Player;
-class Platform : public QObject, public QGraphicsRectItem
+class Platform : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
 public:
-    Platform(qreal x, qreal y, qreal width, qreal height, Player *player);
+    Platform();
     ~Platform();
 
 
@@ -22,7 +24,6 @@ signals:
     void plat_player_collision();
 
 private:
-    Player *m_player;
     QMediaPlayer *death_sound;
     QAudioOutput *death_audio;
     static QList<Platform *> platforms;
