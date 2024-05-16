@@ -12,15 +12,17 @@ Platform::Platform()
 
     QGraphicsItemGroup *platformGroup = new QGraphicsItemGroup();
 
-    int randomRectHeight = QRandomGenerator::global()->bounded(30, 45);
-    QGraphicsRectItem *rectangle = new QGraphicsRectItem(0, 60, 60, randomRectHeight);
-    QGraphicsRectItem *square = new QGraphicsRectItem(60, 120, randomRectHeight, 5 + randomRectHeight);
+    //int randomRectHeight = QRandomGenerator::global()->bounded(30, 45);
+    QGraphicsRectItem *rectangle = new QGraphicsRectItem(0, 60, 60, 40);
+    QGraphicsRectItem *square = new QGraphicsRectItem(60, 120, 40, 5 + 40);
     rectangle->setBrush(QColor(255,20,147));
     rectangle->setPen(QPen(Qt::blue));
     platformGroup->addToGroup(rectangle);
     platformGroup->addToGroup(square);
 
-    setPos(200, 610 - randomRectHeight);
+    addToGroup(platformGroup);
+
+    setPos(200, 610 - 40);
 
     QTimer *movement_timer = new QTimer(this);
     connect(movement_timer, SIGNAL(timeout()), this, SLOT(move()));
