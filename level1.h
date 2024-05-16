@@ -1,7 +1,6 @@
 #ifndef LEVEL1_H
 #define LEVEL1_H
 
-#include "level.h"
 #include "player.h"
 #include "qtimer.h"
 #include <QDialog>

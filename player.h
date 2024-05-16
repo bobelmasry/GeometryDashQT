@@ -35,7 +35,6 @@ public slots:
     void showAttempts();
     void resetCoins();
     void createPlatform();
-    void player_hitPlatform(Platform *platform);
 
 private:
     qreal angle;
