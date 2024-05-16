@@ -40,7 +40,7 @@ level2::level2()
     QObject::connect(platform_timer, SIGNAL(timeout()), player, SLOT(createPlatform()));
 
     enemy_timer->start(1500);
-    platform_timer->start(1000);
+    platform_timer->start(850);
     coin_timer->start(1000);
 
 

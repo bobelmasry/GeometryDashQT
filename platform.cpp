@@ -31,8 +31,8 @@ void Platform::move()
             // Check if the player is jumping
             if (player->isInAir()) {
                 // Increase the jump by adding a higher positive vertical velocity
-                player->setYVelocity(-player->getYVelocity() ); // Adjust the bounce strength as needed
-                player->setYVelocity(player->getYVelocity() -30); // Increase the upward velocity
+                //player->setYVelocity(-player->getYVelocity() ); // Adjust the bounce strength as needed
+                player->setYVelocity(player->getYVelocity() -15); // Increase the upward velocity
                 // Since jumping is allowed during bouncing, set the player's in_air flag to false
                 player->setInAir(false);
             } else {
