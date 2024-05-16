@@ -2,25 +2,29 @@
 #define PLATFORM_H
 
 #include <QGraphicsRectItem>
-#include "player.h"
+#include <QObject>
 #include <QMediaPlayer>
 
-
-class Platform : public QGraphicsRectItem
+class Player;
+class Platform : public QObject, public QGraphicsRectItem
 {
+    Q_OBJECT
 public:
     Platform(qreal x, qreal y, qreal width, qreal height, Player *player);
+     ~Platform();
+
+public slots:
     void move();
 
-
+signals:
+    void left_collision(QGraphicsItem* player);
+    void plat_player_collision();
 
 private:
-    Player *m_player; // Pointer to the player object
-    QMediaPlayer* death_sound = nullptr;
-    QAudioOutput* death_audio = nullptr;
-
-
-
+    Player *m_player;
+    QMediaPlayer *death_sound;
+    QAudioOutput *death_audio;
+    static QList<Platform*> platforms;
 };
 
 #endif // PLATFORM_H

@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "enemy.h"
 #include "coin.h"
+#include "platform.h"
 #include <QGraphicsRectItem>
 #include <QPropertyAnimation>
 #include <QFile>
@@ -55,6 +56,7 @@ Player::Player(QGraphicsScene *scene) : QGraphicsPixmapItem(), health(1), coins(
 
     in_air=false;
 
+
     rotationTimer = new QTimer(this);
     connect(rotationTimer, &QTimer::timeout, this, &::Player::rotation);
 
@@ -68,10 +70,12 @@ void Player::increase() {
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
 }
 
-void Player::keyPressEvent(QKeyEvent *event) {
+void Player::keyPressEvent(QKeyEvent *event)
+{
     if (event->key() == Qt::Key_Space && !in_air) {
         in_air = true;
         yVelocity += jumpVelocity;
+        advance();
         rotation();
     }
 }
@@ -111,6 +115,12 @@ void Player::createCoin()
 {
     coin* Coin = new coin();
     scene()->addItem(Coin);
+}
+
+void Player::createPlatform()
+{
+    Platform* block = new Platform(1600, 590, 75, 75, this);
+    scene()->addItem(block);
 }
 
 void Player::resetCoins(){
@@ -177,7 +187,6 @@ void Player::showAttempts() {
 
     resetCoins();
 }
-
 
 
 void Player::emitParticles()

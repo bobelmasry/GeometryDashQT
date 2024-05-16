@@ -9,6 +9,8 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
+
+class Platform;
 class Player : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
@@ -32,6 +34,8 @@ public slots:
     void setPosition(qreal x, qreal y);
     void showAttempts();
     void resetCoins();
+    void createPlatform();
+    void player_hitPlatform(Platform *platform);
 
 private:
     qreal angle;

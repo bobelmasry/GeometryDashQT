@@ -6,6 +6,7 @@
 #include <QGraphicsRectItem>
 #include "mainwindow.h"
 #include "player.h"
+#include "qobjectdefs.h"
 #include <QGraphicsPixmapItem>
 #include <enemy.h>
 #include <coin.h>
@@ -179,9 +180,5 @@ QMediaPlayer* level1::getLevel1Music()
 }
 
 
-void level1::reset_timer()
-{
-    elapsedSec=0;
-}
 
 level1::~level1() {}
