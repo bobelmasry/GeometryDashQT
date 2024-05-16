@@ -9,7 +9,6 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
-
 class Platform;
 class Player : public QObject, public QGraphicsPixmapItem
 {
@@ -24,6 +23,11 @@ public:
     Player(QGraphicsScene *scene);
     void keyPressEvent(QKeyEvent *event);
     int numOfAttempts = 1;
+    void setInAir(bool inAir);
+    bool isInAir() const;
+    qreal getYVelocity() const;
+    void setYVelocity(qreal velocity);
+
 public slots:
     void createEnemy();
     void createCoin();
@@ -35,6 +39,8 @@ public slots:
     void showAttempts();
     void resetCoins();
     void createPlatform();
+signals:
+    void inAirChanged(bool inAir);
 
 private:
     qreal angle;
@@ -43,7 +49,6 @@ private:
     QTimer *particleTimer;
     bool in_air;
     QGraphicsTextItem *attemptsText;
-
 };
 
 #endif // PLAYER_H

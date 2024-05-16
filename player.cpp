@@ -1,19 +1,24 @@
 #include "player.h"
-#include <QKeyEvent>
-#include <QGraphicsScene>
 #include <QDebug>
-#include "enemy.h"
-#include "coin.h"
-#include "platform.h"
-#include <QGraphicsRectItem>
-#include <QPropertyAnimation>
 #include <QFile>
-
+#include <QGraphicsRectItem>
+#include <QGraphicsScene>
+#include <QKeyEvent>
+#include <QPropertyAnimation>
+#include "coin.h"
+#include "enemy.h"
+#include "platform.h"
 
 const qreal gravity = 15;
 const qreal jumpVelocity = -85;
 
-Player::Player(QGraphicsScene *scene) : QGraphicsPixmapItem(), health(1), coins(0), yVelocity(0) {
+Player::Player(QGraphicsScene *scene)
+    : QGraphicsPixmapItem()
+    , health(1)
+    , coins(0)
+    , yVelocity(0)
+    , in_air(false)
+{
     QFile file(":/images/skinData.csv");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << file.errorString();
@@ -48,14 +53,13 @@ Player::Player(QGraphicsScene *scene) : QGraphicsPixmapItem(), health(1), coins(
 
     coinDisplay = new QGraphicsTextItem();
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
-    coinDisplay->setDefaultTextColor(QColor(255,255,255));
+    coinDisplay->setDefaultTextColor(QColor(255, 255, 255));
     coinDisplay->setPos(30, 10);
     scene->addItem(coinDisplay);
 
     msgBox = new QMessageBox();
 
-    in_air=false;
-
+    in_air = false;
 
     rotationTimer = new QTimer(this);
     connect(rotationTimer, &QTimer::timeout, this, &::Player::rotation);
@@ -65,7 +69,8 @@ Player::Player(QGraphicsScene *scene) : QGraphicsPixmapItem(), health(1), coins(
     particleTimer->start(500);
 }
 
-void Player::increase() {
+void Player::increase()
+{
     coins++;
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
 }
@@ -80,55 +85,74 @@ void Player::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void Player::setInAir(bool inAir)
+{
+    in_air = inAir;
+}
 
 void Player::advance()
 {
-        yVelocity += gravity;
+    yVelocity += gravity;
 
-        qreal newY = y() + yVelocity;
-        qreal sceneHeight = scene()->sceneRect().height();
+    qreal newY = y() + yVelocity;
+    qreal sceneHeight = scene()->sceneRect().height();
 
-        if (newY < 0) {
-            newY = 0;
-            yVelocity = 0;
-        } else if (newY > sceneHeight - pixmap().height() - 200) {
-            newY = sceneHeight - pixmap().height() - 200;
-            yVelocity = 0;
-            in_air=false;
-            emitParticles();
-            particleTimer->start(500);
-        }
-        else
-            particleTimer->stop();
+    if (newY < 0) {
+        newY = 0;
+        yVelocity = 0;
+    } else if (newY > sceneHeight - pixmap().height() - 200) {
+        newY = sceneHeight - pixmap().height() - 200;
+        yVelocity = 0;
+        in_air = false;
+        emitParticles();
+        particleTimer->start(500);
+    } else
+        particleTimer->stop();
 
-        setPos(x(), newY);
+    setPos(x(), newY);
+    emit inAirChanged(in_air);
 }
 
 void Player::createEnemy()
 {
-   Enemy* enemy = new Enemy(*this);
-   scene()->addItem(enemy);
+    Enemy *enemy = new Enemy(*this);
+    scene()->addItem(enemy);
 }
-
 
 void Player::createCoin()
 {
-    coin* Coin = new coin();
+    coin *Coin = new coin();
     scene()->addItem(Coin);
 }
 
 void Player::createPlatform()
 {
-    Platform* block = new Platform(1600, 590, 75, 75, this);
+    Platform *block = new Platform(1600, 590, 75, 75, this);
     scene()->addItem(block);
 }
+bool Player::isInAir() const
+{
+    return in_air;
+}
 
-void Player::resetCoins(){
+qreal Player::getYVelocity() const
+{
+    return yVelocity;
+}
+
+void Player::setYVelocity(qreal velocity)
+{
+    yVelocity = velocity;
+}
+
+void Player::resetCoins()
+{
     coins = 0;
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
 }
 
-void Player::rotation() {
+void Player::rotation()
+{
     static qreal currentRotation = 0;
     if (currentRotation == 0) {
         setTransformOriginPoint(boundingRect().center());
@@ -154,8 +178,10 @@ void Player::setPosition(qreal x, qreal y)
     setPos(x, y);
 }
 
-void Player::showAttempts() {
-    QGraphicsTextItem *attemptsText = new QGraphicsTextItem(QString("Attempt %1").arg(this->numOfAttempts));
+void Player::showAttempts()
+{
+    QGraphicsTextItem *attemptsText = new QGraphicsTextItem(
+        QString("Attempt %1").arg(this->numOfAttempts));
 
     QFont font;
     font.setPointSize(40);
@@ -165,7 +191,7 @@ void Player::showAttempts() {
     attemptsText->setDefaultTextColor(Qt::white);
 
     int textWidth = attemptsText->boundingRect().width();
-    int playerX = this->x(); // Get player's x position
+    int playerX = this->x();                                        // Get player's x position
     attemptsText->setPos(playerX - textWidth / 2, this->y() - 200); // Position above the player
     scene()->addItem(attemptsText);
 
@@ -178,7 +204,7 @@ void Player::showAttempts() {
             if (attemptsText->pos().x() + textWidth < 0) { // If the text item is out of scene
                 scene()->removeItem(attemptsText);
                 delete attemptsText;
-                timer->stop(); // Stop the timer
+                timer->stop();        // Stop the timer
                 timer->deleteLater(); // Delete the timer
             }
         });
@@ -188,22 +214,29 @@ void Player::showAttempts() {
     resetCoins();
 }
 
-
 void Player::emitParticles()
 {
-    qreal particleY = y() + pixmap().height(); // y coordinate for all particles (bottom of the player)
-    qreal particleSize = QRandomGenerator::global()->bounded(5, 15); // randomize the size of the particles
+    qreal particleY = y()
+                      + pixmap().height(); // y coordinate for all particles (bottom of the player)
+    qreal particleSize = QRandomGenerator::global()
+                             ->bounded(5, 15); // randomize the size of the particles
 
-    QGraphicsRectItem *particle = new QGraphicsRectItem(0, 0, particleSize, particleSize); // create a particle
+    QGraphicsRectItem *particle = new QGraphicsRectItem(0,
+                                                        0,
+                                                        particleSize,
+                                                        particleSize); // create a particle
 
-    qreal particleX = x() - 10; // set position to be slightly to the left of the bottom-left corner of the player
+    qreal particleX
+        = x()
+          - 10; // set position to be slightly to the left of the bottom-left corner of the player
     particle->setPos(particleX, particleY);
 
     particle->setBrush(Qt::blue); // set brush color
 
     scene()->addItem(particle); // add the particle to the scene
 
-    qreal particleYVelocity = QRandomGenerator::global()->bounded(-20, -5); // randomize the vertical speed of the particle
+    qreal particleYVelocity = QRandomGenerator::global()
+                                  ->bounded(-20, -5); // randomize the vertical speed of the particle
     particle->setY(particle->y() + particleYVelocity); // apply initial velocity to particles
 
     QTimer *moveTimer = new QTimer(this); // start a timer to update the particle's position
@@ -211,17 +244,19 @@ void Player::emitParticles()
         particle->setX(particle->x() - 1); // move the particle to the left
 
         try {
-            qreal distance = qAbs(particle->x() - x()); // calculate the absolute distance between the particle and the player
+            qreal distance = qAbs(
+                particle->x()
+                - x()); // calculate the absolute distance between the particle and the player
 
             if (distance > 50) { // check if the distance is greater than 100 pixels
                 delete particle;
                 moveTimer->stop(); // stop the timer
-                delete moveTimer; // delete the timer
+                delete moveTimer;  // delete the timer
             }
-        } catch (std::exception const& e) {
+        } catch (std::exception const &e) {
             qDebug() << "Exception occurred: " << e.what();
             moveTimer->stop(); // stop the timer
-            delete moveTimer; // delete the timer
+            delete moveTimer;  // delete the timer
         }
     });
     moveTimer->start(10); // update the particle's position every 10 milliseconds
