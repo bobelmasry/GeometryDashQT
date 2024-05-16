@@ -14,13 +14,17 @@ Platform::Platform()
 
     int randomRectHeight = QRandomGenerator::global()->bounded(30, 45);
     QGraphicsRectItem *rectangle = new QGraphicsRectItem(0, 60, 60, randomRectHeight);
-    QGraphicsRectItem *square = new QGraphicsRectItem(60, 120, randomRectHeight, 5 + randomRectHeight);
+    QGraphicsRectItem *square = new QGraphicsRectItem(0, 60 - (5 + randomRectHeight), 60, 5 + randomRectHeight);
     rectangle->setBrush(QColor(255,20,147));
+    square->setBrush(QColor(255,20,147));
     rectangle->setPen(QPen(Qt::blue));
+    square->setPen(QPen(Qt::blue));
     platformGroup->addToGroup(rectangle);
     platformGroup->addToGroup(square);
 
-    setPos(200, 610 - randomRectHeight);
+    addToGroup(platformGroup);
+
+    setPos(1600, 610 - randomRectHeight);
 
     QTimer *movement_timer = new QTimer(this);
     connect(movement_timer, SIGNAL(timeout()), this, SLOT(move()));
@@ -30,7 +34,6 @@ Platform::Platform()
 void Platform::move()
 {
     QList<QGraphicsItem *> colliding_items = collidingItems();
-    qDebug() << "Platform Moved.";
     setPos(x() - 15, y());
 
     for (int i = 0; i < colliding_items.size(); ++i) {
