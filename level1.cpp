@@ -148,7 +148,9 @@ void level1::level_complete()
                     level1_music->stop();
                 });
 }
-                       );}
+                       );
+
+}
 
 void level1::play_music()
 {

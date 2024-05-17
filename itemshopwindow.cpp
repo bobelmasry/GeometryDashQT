@@ -7,12 +7,14 @@
 #include <QLabel>
 #include <QTextEdit>
 #include <QVBoxLayout>
+#include <QStandardPaths>
 
 
 itemShopWindow::itemShopWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::itemShopWindow)
 {
+
     ui->setupUi(this);
     QFile file("D://python_projects//other shit//CS//GeometryDashQT//images//skinData.csv");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {

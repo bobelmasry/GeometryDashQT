@@ -19,10 +19,18 @@ class level2: public QDialog
 public:
     level2();
     ~level2();
+    static void level_complete();
+    void elapsed_timer_creator(QGraphicsScene *scene);
+    void play_music();
+    static QMediaPlayer*level2_music;
 private:
 
     QAudioOutput* start_level = new QAudioOutput();
     QMediaPlayer* start_level_audio = new QMediaPlayer();
+
+
+    QAudioOutput* base_after_base= new QAudioOutput();
+
 
     static QGraphicsScene* scene;
     static QGraphicsView* view;
@@ -31,7 +39,7 @@ private:
     static QTimer* coin_timer;
     static QTimer* platform_timer;
     static QTimer* player_timer;
-    static QTimer* elapsed_time;
+    //static QTimer* elapsed_time;
 
     void set_level(QGraphicsScene *scene,QGraphicsView *view) ;
 };

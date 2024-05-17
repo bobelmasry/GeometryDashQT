@@ -25,6 +25,8 @@ Player::Player(QGraphicsScene *scene)
         return;
     }
 
+
+
     QTextStream in(&file);
     QString line;
     QString equippedSkinImagePath;
@@ -129,7 +131,7 @@ void Player::createPlatform()
 {
     Platform *block = new Platform();
     scene()->addItem(block);
-    qDebug() << "Platform Created.";
+
 }
 bool Player::isInAir() const
 {

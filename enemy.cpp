@@ -6,6 +6,7 @@
 #include "level1.h"
 #include <coin.h>
 #include <QApplication>
+#include "platform.h"
 
 QList<Enemy*>Enemy::enemies;
 
@@ -141,20 +142,14 @@ void Enemy::player_hit()
     }
     coin::coins.clear();
 
-
-
-}
-
-void Enemy::deleteAll()
-{
-    foreach(Enemy*enemy, enemies){
-        if(enemy->scene())
-            enemy->scene()->removeItem(enemy);
-        delete enemy;
+    foreach(Platform*platform, Platform::platforms){
+        if(platform->scene())
+            platform->scene()->removeItem(platform);
+        delete platform;
     }
 
-    enemies.clear();
+    Platform::platforms.clear();
+
+
 }
-
-
 

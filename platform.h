@@ -14,10 +14,14 @@ class Platform : public QObject, public QGraphicsItemGroup
 public:
     Platform();
     ~Platform();
+    static QList<Platform *> platforms;
+    static int continious_plats;
 
 
 public slots:
     void move();
+    void player_hit();
+
 
 signals:
     void left_collision(QGraphicsItem *player);
@@ -26,7 +30,7 @@ signals:
 private:
     QMediaPlayer *death_sound;
     QAudioOutput *death_audio;
-    static QList<Platform *> platforms;
+
 
 };
 

@@ -15,10 +15,10 @@ class Enemy : public QObject, public QGraphicsItemGroup
 public:
     Enemy(Player& player);
     static int continous_enemies;
+    static QList<Enemy*> enemies;
 public slots:
     void move();
     void player_hit();
-   static void deleteAll();
 
 signals:
    void player_dead();
@@ -28,7 +28,7 @@ private:
     QMediaPlayer* death_sound = nullptr;
     QAudioOutput* death_audio = nullptr;
     Player& m_player;
-    static QList<Enemy*> enemies;
+
 
 };
 

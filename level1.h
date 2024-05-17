@@ -27,7 +27,7 @@ public:
     static void level_complete();
     void play_music();
     static int elapsedSec;
-    void elapsed_timer_creator(QGraphicsScene *scene);
+    static void elapsed_timer_creator(QGraphicsScene *scene);
     void update_timer(QGraphicsTextItem *elapsedTimeText, int &elapsedSec);
     void set_level(QGraphicsScene *scene,QGraphicsView *view);
 
