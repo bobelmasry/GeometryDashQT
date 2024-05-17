@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 #include "itemshopwindow.h"
+#include "qstandardpaths.h"
 #include "ui_mainwindow.h"
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
 #include "level5.h"
+#include <QFile>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -49,6 +52,53 @@ MainWindow::MainWindow(QWidget *parent)
     main_menu_music->setAudioOutput(main_theme);
     main_theme->setVolume(50);
     main_menu_music->play();
+
+
+    QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QString skinDataReceiver = desktopDir + "/skinData.txt";
+
+    // Check if the file already exists
+    QFile file(skinDataReceiver);
+    if (!file.exists()) {
+        QString skinDataSender = ":/images/skinData.txt";
+
+        // Copy the file only if it doesn't exist on the desktop
+        if (!copyFiley(skinDataSender, skinDataReceiver)) {
+            qDebug() << "Failed to copy skin data file.";
+            return;
+        }
+    }
+
+}
+
+
+bool MainWindow::copyFiley(QString &sourceFile, QString &destinationFile)
+{
+    QFile source(sourceFile);
+    if (!source.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Error opening source file";
+        return false;
+    }
+
+    QFile destination(destinationFile);
+    if (!destination.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Error opening destination file";
+        source.close();
+        return false;
+    }
+
+    QTextStream in(&source);
+    QTextStream out(&destination);
+
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        out << line << "\n";
+    }
+
+    source.close();
+    destination.close();
+
+    return true;
 }
 
 MainWindow::~MainWindow()

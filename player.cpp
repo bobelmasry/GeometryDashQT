@@ -49,13 +49,19 @@ Player::Player(QGraphicsScene *scene)
     // Set the pixmap using the image path of the equipped skin
     qDebug() << equippedSkinImagePath;
     if (!equippedSkinImagePath.isEmpty()) {
-        setPixmap(QPixmap(equippedSkinImagePath).scaled(100, 100));
+        QPixmap pixmap(equippedSkinImagePath);
+        if (!pixmap.isNull()) {
+            setPixmap(pixmap.scaled(75, 75));
+        } else {
+            setPixmap(QPixmap(":/images/square.png").scaled(75, 75)); // Fallback image if the pixmap is null
+        }
     } else {
-        setPixmap(QPixmap(":/images/square.png").scaled(100, 100));
+        setPixmap(QPixmap(":/images/square.png").scaled(75, 75)); // Fallback image if no skin is equipped
         // qDebug() << "No skin is currently equipped.";
     }
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
+
 
     coinDisplay = new QGraphicsTextItem();
     coinDisplay->setPlainText("Coins: " + QString::number(coins));
