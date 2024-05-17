@@ -11,7 +11,7 @@
 #include "level_base.h"
 
 
-
+// declare static member variables
 QGraphicsScene*level5::scene;
 QGraphicsView*level5::view;
 QTimer*level5::coin_timer;
@@ -20,59 +20,79 @@ QTimer*level5::enemy_timer;
 
 QMediaPlayer*level5::level5_music=nullptr;
 
+// constructor
 level5::level5()
 {
+    // set the level to 5
     level_base::level=5;
+    // create a new graphics scene
     scene = new QGraphicsScene();
 
+    // create a new graphics view with the scene
     view = new QGraphicsView(scene);
 
+    // set up the level with the scene and view
     set_level(scene,view);
 
+    // play the background music
     play_music();
 
+    // create and start the elapsed timer
     level_base::elapsed_timer_creator(scene);
 
+    // create a new player object and add it to the scene
     Player *player = new Player(scene);
     scene->addItem(player);
+    // set the player's position
     player->setPos(300,400);
+    // set the view to focus on the player
     view->setFocus();
 
+    // create a timer to advance the player's state
     QTimer *player_timer = new QTimer();
     QObject::connect(player_timer, SIGNAL(timeout()), player, SLOT(advance()));
     player_timer->start(50);
 
+    // create timers for generating enemies, coins, and platforms
     enemy_timer = new QTimer();
     coin_timer= new QTimer();
     platform_timer= new QTimer();
 
+    // connect timers to the respective player functions
     QObject::connect(enemy_timer, SIGNAL(timeout()), player, SLOT(createEnemy()));
     QObject::connect(coin_timer, SIGNAL(timeout()), player, SLOT(createCoin()));
     QObject::connect(platform_timer, SIGNAL(timeout()), player, SLOT(createPlatform()));
 
+    // start the timers with specified intervals
     enemy_timer->start(1500);
     platform_timer->start(800);
     coin_timer->start(5000);
 
+    // show the view in full screen mode
     view->showFullScreen();
 
 
 }
 
+// function to set up the level
 void level5::set_level(QGraphicsScene*scene,QGraphicsView*view)
 {
+    // set the scene rectangle size
     scene->setSceneRect(0, 0, 1560, 870);
 
 
+    // disable scroll bars
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    // set the background image
     QPixmap backgroundImage(":/images/level5_background.png");
     backgroundImage = backgroundImage.scaled(scene->width(), scene->height());
     QGraphicsPixmapItem *background = new QGraphicsPixmapItem(backgroundImage);
     scene->addItem(background);
     background->setPos(0, 0);
 
+    // set the floor image
     QPixmap level_floor_image(":/images/level5_floor.png");
     level_floor_image=level_floor_image.scaled(scene->width(),400);
     QGraphicsPixmapItem*level1_floor=new QGraphicsPixmapItem(level_floor_image);
@@ -82,6 +102,7 @@ void level5::set_level(QGraphicsScene*scene,QGraphicsView*view)
 
 }
 
+// function to play background music
 void level5::play_music()
 {
     //code to play sound when clicking on level
@@ -106,7 +127,7 @@ void level5::play_music()
 }
 
 
-
+// function to handle level completion
 void level5::level_complete()
 {
     qDebug() << "entered level complete";
