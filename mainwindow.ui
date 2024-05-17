@@ -98,6 +98,22 @@
      <string>Geometry Dash</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="level3Button">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>190</y>
+      <width>171</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Level 3</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -105,7 +121,7 @@
      <x>0</x>
      <y>0</y>
      <width>2064</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

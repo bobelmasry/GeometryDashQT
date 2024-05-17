@@ -27,6 +27,8 @@ private slots:
 
     void on_itemShopButton_clicked();
 
+    void on_level3Button_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAudioOutput* main_theme = new QAudioOutput();

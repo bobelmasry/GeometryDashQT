@@ -87,7 +87,7 @@ void Platform::move()
             if (square->collidesWithItem(player)) {
                 //qDebug() << "Collision with square detected";
                 if (player->getYVelocity() > 0) { // Only if the player is falling
-                    player->setYVelocity(0); // Reset vertical velocity
+                    player->setYVelocity(-5); // Reset vertical velocity
                     player->setInAir(false); // Player is no longer in the air
                     player->setPos(player->x(), square->scenePos().y() - player->pixmap().height());
                     //qDebug() << "Player landed on the square";

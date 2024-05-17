@@ -1,4 +1,4 @@
-#include "level2.h"
+#include "level3.h"
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -9,15 +9,15 @@
 #include "qobjectdefs.h"
 #include <QGraphicsPixmapItem>
 
-QGraphicsScene*level2::scene;
-QGraphicsView*level2::view;
-QTimer*level2::coin_timer;
-QTimer*level2::platform_timer;
-QTimer*level2::enemy_timer;
+QGraphicsScene*level3::scene;
+QGraphicsView*level3::view;
+QTimer*level3::coin_timer;
+QTimer*level3::platform_timer;
+QTimer*level3::enemy_timer;
 
-QMediaPlayer*level2::level2_music=nullptr;
+QMediaPlayer*level3::level3_music=nullptr;
 
-level2::level2()
+level3::level3()
 {
     scene = new QGraphicsScene();
 
@@ -42,12 +42,12 @@ level2::level2()
     coin_timer= new QTimer();
     platform_timer= new QTimer();
 
-    //QObject::connect(enemy_timer, SIGNAL(timeout()), player, SLOT(createEnemy()));
+    QObject::connect(enemy_timer, SIGNAL(timeout()), player, SLOT(createEnemy()));
     QObject::connect(coin_timer, SIGNAL(timeout()), player, SLOT(createCoin()));
     QObject::connect(platform_timer, SIGNAL(timeout()), player, SLOT(createPlatform()));
 
     enemy_timer->start(1500);
-    platform_timer->start(650);
+    platform_timer->start(1200);
     coin_timer->start(1000);
 
     view->showFullScreen();
@@ -55,7 +55,7 @@ level2::level2()
 
 }
 
-void level2::set_level(QGraphicsScene*scene,QGraphicsView*view)
+void level3::set_level(QGraphicsScene*scene,QGraphicsView*view)
 {
     scene->setSceneRect(0, 0, 1560, 870);
 
@@ -78,7 +78,7 @@ void level2::set_level(QGraphicsScene*scene,QGraphicsView*view)
 
 }
 
-void level2::play_music()
+void level3::play_music()
 {
     //code to play sound when clicking on level
     start_level_audio->setSource(QUrl("qrc:/Sound/start_level_audio.mp3"));
@@ -87,15 +87,15 @@ void level2::play_music()
     start_level_audio->play();
 
     // Initialize level1_music
-    level2_music = new QMediaPlayer();
-    level2_music->setSource(QUrl("qrc:/Sound/level2 music.mp3"));
-    level2_music->setAudioOutput(base_after_base);
+    level3_music = new QMediaPlayer();
+    level3_music->setSource(QUrl("qrc:/Sound/level2 music.mp3"));
+    level3_music->setAudioOutput(base_after_base);
     base_after_base->setVolume(50);
 
     // Delay the level1_music audio
     QTimer::singleShot(1000, this, []() {
-        if (level2_music) {
-            level2_music->play();
+        if (level3_music) {
+            level3_music->play();
         }
     });
 
@@ -103,7 +103,7 @@ void level2::play_music()
 
 
 
-void level2::level_complete()
+void level3::level_complete()
 {
     platform_timer->stop();
     coin_timer->stop();
@@ -124,11 +124,11 @@ void level2::level_complete()
                            QTimer::singleShot(3000, [&]() {
                                MainWindow *windowObj = new MainWindow();
                                windowObj->show();
-                               level2_music->stop();
+                               level3_music->stop();
                            });
                        }
                        );
 
 }
 
-level2::~level2() {}
+level3::~level3() {}
