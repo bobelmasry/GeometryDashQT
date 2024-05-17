@@ -9,13 +9,14 @@
 #include <QVBoxLayout>
 #include <QStandardPaths>
 
-
+// constructor
 itemShopWindow::itemShopWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::itemShopWindow)
 {
     ui->setupUi(this);
 
+    // gets the path for the skin data file
     QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     QString skinDataReceiver = desktopDir + "/skinData.txt";
 
@@ -31,19 +32,24 @@ itemShopWindow::itemShopWindow(QWidget *parent)
         }
     }
 
+    // sets up the user interface
     set_upUI();
 
+    // sets up images for skins
     set_up_images();
 }
 
+// this function is for copying a file
 bool itemShopWindow::copyFile(const QString &sourceFile, const QString &destinationFile)
 {
+    // opens the source file for reading
     QFile source(sourceFile);
     if (!source.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Error opening source file";
         return false;
     }
 
+    // opens the destination file for writing
     QFile destination(destinationFile);
     if (!destination.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Error opening destination file";
@@ -51,6 +57,7 @@ bool itemShopWindow::copyFile(const QString &sourceFile, const QString &destinat
         return false;
     }
 
+    // copies contents from source to destination
     QTextStream in(&source);
     QTextStream out(&destination);
 
@@ -59,15 +66,17 @@ bool itemShopWindow::copyFile(const QString &sourceFile, const QString &destinat
         out << line << "\n";
     }
 
+    // closes both files after copying
     source.close();
     destination.close();
 
     return true;
 }
 
-
+// this function sets up images for skins
 void itemShopWindow::set_up_images()
 {
+    // loads skin images and sets them to corresponding ui elements
     QPixmap skin1(":/images/crusher_skin.png");
     QPixmap skin2(":/images/destroyer_skin.png");
     QPixmap skin3(":/images/bob_skin.png");
@@ -78,28 +87,28 @@ void itemShopWindow::set_up_images()
 
 }
 
-
+// this function sets up the ui
 void itemShopWindow::set_upUI()
 {
     QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     QString skinDataFilePath = desktopDir + "/skinData.txt";
     QString coinDataFilePath = desktopDir + "/data.txt";
 
-    // Open skin data file
+    // opens skin data file
     QFile skinDataFile(skinDataFilePath);
     if (!skinDataFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Failed to open skin data file: " << skinDataFile.errorString();
         return;
     }
 
-    // Open coin data file
+    // opens coin data file
     QFile readCoins(coinDataFilePath);
     if (!readCoins.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Failed to open coin data file: " << readCoins.errorString();
         return;
     }
 
-    // Read coin data
+    // reads coin data
     QString coin_num;
     QTextStream coinDataStream(&readCoins);
     while (!coinDataStream.atEnd()) {
@@ -108,14 +117,13 @@ void itemShopWindow::set_upUI()
 
     ui->coinLabel->setText("Coins: " + coin_num);
 
-    // Read skin data
+    // reads skin data
     QTextStream skinDataIn(&skinDataFile);
-    // Process skin data as needed
 
-    // Read the first line to skip the header if there's one
+
     QString headerLine = skinDataIn.readLine();
 
-    // Assuming the file has multiple lines for multiple skins
+
     while (!skinDataIn.atEnd()) {
         QString line = skinDataIn.readLine();
         QStringList fields = line.split(',');
@@ -126,7 +134,7 @@ void itemShopWindow::set_upUI()
         QString skinIsEquipped = fields.value(3);
         QString skinImagePath = fields.value(4).trimmed().replace("\"", "");
 
-        // Assuming you have labels or other UI elements to display this information
+
         if (skinName == "Crusher") {
             ui->skin1_price->setText(skinPrice);
 
@@ -170,19 +178,22 @@ void itemShopWindow::set_upUI()
     skinDataFile.close();
 }
 
-
+// destructor
 itemShopWindow::~itemShopWindow()
 {
     delete ui;
 }
 
+//this function handles what happens when the back button is clicked
 void itemShopWindow::on_backButton_clicked()
 {
-    hide();
+    hide(); // hides the current window
     MainWindow *windowObj = new MainWindow();
-    windowObj->show();
+    windowObj->show(); // shows the main window
 
 }
+
+// this function handles what happens when skin1 buy equip button is clicked
 void itemShopWindow::on_skin1_buy_equip_clicked()
 {
     QString buttonText = ui->skin1_buy_equip->text();
@@ -193,7 +204,7 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
     QString coinDataFilePath = desktopDir + "/data.txt";
 
     if (buttonText == "Equip" || buttonText == "Unequip") {
-        // Read the contents of the file
+        // reads the contents of the file
         QFile file(skinDataFilePath);
         if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
             qDebug() << "Failed to open skin data file:" << file.errorString();
@@ -208,12 +219,12 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
             QStringList fields = line.split(',');
             if (fields[0] == "Crusher" && fields[2] == "TRUE") {
                 skinFound = true;
-                // Modify the line for Crusher to set isEquipped based on buttonText
+                // modifies the line for Crusher to set isEquipped based on buttonText
                 if (buttonText == "Equip") {
-                    fields[3] = "TRUE"; // isEquipped is the fourth field
+                    fields[3] = "TRUE";
                     ui->skin1_buy_equip->setText("Unequip");
                 } else if (buttonText == "Unequip" && fields[3] == "TRUE") {
-                    fields[3] = "FALSE"; // isEquipped is the fourth field
+                    fields[3] = "FALSE";
                     ui->skin1_buy_equip->setText("Equip");
                 }
             }
@@ -238,10 +249,10 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
             out << line << '\n';
         }
 
-        // Close the file after writing
+        // closes the file after writing
         file.close();
     } else {
-        // Case where Button Text is "Buy"
+        // case where Button Text is "Buy"
         QFile coinFile(coinDataFilePath);
         if (coinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
             qDebug() << "Coin file opened successfully.";
@@ -257,14 +268,14 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
                 bool skinFound = false;
                 while (!(line = skinStream.readLine()).isNull()) {
                     qDebug() << line;
-                    if (line.contains("Crusher")) { // Modify the line for Crusher
+                    if (line.contains("Crusher")) { // modifies the line for Crusher
                         skinFound = true;
                         QStringList fields = line.split(',');
-                        int price = fields[1].toInt(); // Assuming price is the second field
+                        int price = fields[1].toInt();
                         if (coins >= price) {
-                            coins -= price; // Deduct the price from coins
-                            fields[2] = "TRUE"; // Set isOwned to TRUE
-                            fields[3] = "TRUE"; // Set isEquipped to TRUE after buying
+                            coins -= price; // deducts the price from coins
+                            fields[2] = "TRUE"; // set isOwned to TRUE
+                            fields[3] = "TRUE"; // set isEquipped to TRUE after buying
                             ui->errorLabel->setText("Crusher Skin Bought!");
                             ui->skin1_buy_equip->setText("Unequip");
                         } else {
@@ -277,7 +288,7 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
                     }
                     lines.append(line);
                 }
-                // Close the skin file after reading
+                // closes the skin file after reading
                 skinFile.close();
 
                 if (!skinFound) {
@@ -285,7 +296,7 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
                     return;
                 }
 
-                // Write the modified lines back to the CSV file
+                // writes the modified lines back to the file
                 if (!skinFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
                     qDebug() << "Failed to open skin data file for writing:" << skinFile.errorString();
                     return;
@@ -299,7 +310,7 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
                 qDebug() << "Failed to open skin file for reading and writing. Error:" << skinFile.errorString();
             }
 
-            // Write the updated coins back to the coin file
+            // writes the updated coins back to the coin file
             coinFile.seek(0);
             coinFile.resize(0);
             QTextStream coinOut(&coinFile);
@@ -311,6 +322,7 @@ void itemShopWindow::on_skin1_buy_equip_clicked()
     }
 }
 
+// this function handles what happens when skin2 buy equip button is clicked
 void itemShopWindow::on_skin2_buy_equip_clicked()
 {
     QString buttonText = ui->skin2_buy_equip->text();
@@ -321,7 +333,7 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
     QString coinDataFilePath = desktopDir + "/data.txt";
 
     if (buttonText == "Equip" || buttonText == "Unequip") {
-        // Read the contents of the file
+        // readsthe contents of the file
         QFile file(skinDataFilePath);
         if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
             qDebug() << "Failed to open skin data file:" << file.errorString();
@@ -334,12 +346,12 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
         while (!(line = in.readLine()).isNull()) {
             QStringList fields = line.split(',');
             if (fields[0] == "Destroyer") {
-                // Modify the line for Destroyer to set isEquipped based on buttonText
+                // modifies the line for Destroyer to set isEquipped based on buttonText
                 if (buttonText == "Equip") {
-                    fields[3] = "TRUE"; // isEquipped is the fourth field
+                    fields[3] = "TRUE";
                     ui->skin2_buy_equip->setText("Unequip");
                 } else if (buttonText == "Unequip" && fields[3] == "TRUE") {
-                    fields[3] = "FALSE"; // isEquipped is the fourth field
+                    fields[3] = "FALSE";
                     ui->skin2_buy_equip->setText("Equip");
                 }
             }
@@ -347,7 +359,7 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
             lines.append(line);
         }
 
-        // Close the file after reading
+        // closes the file after reading
         file.close();
         if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
             qDebug() << "Failed to open skin data file for writing:" << file.errorString();
@@ -359,11 +371,11 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
             out << line << '\n';
         }
 
-        // Close the file after writing
+        // closes the file after writing
         file.close();
 
     } else {
-        // Case where Button Text is "Buy"
+        // case where Button Text is "Buy"
         QFile coinFile(coinDataFilePath);
         if (coinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
             qDebug() << "Coin file opened successfully.";
@@ -379,14 +391,14 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
                 bool skinFound = false;
                 while (!(line = skinStream.readLine()).isNull()) {
                     qDebug() << line;
-                    if (line.contains("Destroyer") && line.contains("TRUE")) { // Modify the line for Destroyer
+                    if (line.contains("Destroyer") && line.contains("TRUE")) { // Modifies the line for Destroyer
                         skinFound = true;
                         QStringList fields = line.split(',');
-                        int price = fields[1].toInt(); // Assuming price is the second field
+                        int price = fields[1].toInt();
                         if (coins >= price) {
-                            coins -= price; // Deduct the price from coins
-                            fields[2] = "TRUE"; // Set isOwned to TRUE
-                            fields[3] = "TRUE"; // Set isEquipped to TRUE after buying
+                            coins -= price; // deducts the price from coins
+                            fields[2] = "TRUE"; // sets isOwned to TRUE
+                            fields[3] = "TRUE"; // sets isEquipped to TRUE after buying
                             ui->errorLabel->setText("Destroyer Skin Bought!");
                             ui->skin2_buy_equip->setText("Unequip");
                         } else {
@@ -399,7 +411,7 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
                     }
                     lines.append(line);
                 }
-                // Close the skin file after reading
+                // closes the skin file after reading
                 skinFile.close();
 
                 if (!skinFound) {
@@ -407,7 +419,7 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
                     return;
                 }
 
-                // Write the modified lines back to the CSV file
+                // writes the modified lines back to the file
                 if (!skinFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
                     qDebug() << "Failed to open skin data file for writing:" << skinFile.errorString();
                     return;
@@ -421,7 +433,7 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
                 qDebug() << "Failed to open skin file for reading and writing. Error:" << skinFile.errorString();
             }
 
-            // Write the updated coins back to the coin file
+            // writes the updated coins back to the coin file
             coinFile.seek(0);
             coinFile.resize(0);
             QTextStream coinOut(&coinFile);
@@ -433,7 +445,7 @@ void itemShopWindow::on_skin2_buy_equip_clicked()
     }
 }
 
-
+// this function handles what happens when skin3 buy equip button is clicked
 void itemShopWindow::on_skin3_buy_equip_clicked()
 {
     QString buttonText = ui->skin3_buy_equip->text();
@@ -444,7 +456,7 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
     QString coinDataFilePath = desktopDir + "/data.txt";
 
     if (buttonText == "Equip" || buttonText == "Unequip") {
-        // Read the contents of the file
+        // reads the contents of the file
         QFile file(skinDataFilePath);
         if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
             qDebug() << "Failed to open skin data file:" << file.errorString();
@@ -457,12 +469,12 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
         while (!(line = in.readLine()).isNull()) {
             QStringList fields = line.split(',');
             if (fields[0] == "Bob") {
-                // Modify the line for Bob to set isEquipped based on buttonText
+                // modifies the line for Bob to set isEquipped based on buttonText
                 if (buttonText == "Equip") {
-                    fields[3] = "TRUE"; // isEquipped is the fourth field
+                    fields[3] = "TRUE";
                     ui->skin3_buy_equip->setText("Unequip");
                 } else if (buttonText == "Unequip" && fields[3] == "TRUE") {
-                    fields[3] = "FALSE"; // isEquipped is the fourth field
+                    fields[3] = "FALSE";
                     ui->skin3_buy_equip->setText("Equip");
                 }
             }
@@ -470,7 +482,7 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
             lines.append(line);
         }
 
-        // Close the file after reading
+        // closes the file after reading
         file.close();
         if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
             qDebug() << "Failed to open skin data file for writing:" << file.errorString();
@@ -482,11 +494,11 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
             out << line << '\n';
         }
 
-        // Close the file after writing
+        // closes the file after writing
         file.close();
 
     } else {
-        // Case where Button Text is "Buy"
+        // case where Button Text is "Buy"
         QFile coinFile(coinDataFilePath);
         if (coinFile.open(QIODevice::ReadWrite | QIODevice::Text)) {
             qDebug() << "Coin file opened successfully.";
@@ -502,12 +514,12 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
                 bool skinFound = false;
                 while (!(line = skinStream.readLine()).isNull()) {
                     qDebug() << line;
-                    if (line.contains("Bob")) { // Modify the line for Bob
+                    if (line.contains("Bob")) { // Modifies the line for Bob
                         skinFound = true;
                         QStringList fields = line.split(',');
-                        int price = fields[1].toInt(); // Assuming price is the second field
+                        int price = fields[1].toInt();
                         if (coins >= price) {
-                            coins -= price; // Deduct the price from coins
+                            coins -= price; // deducts the price from coins
                             fields[2] = "TRUE"; // Set isOwned to TRUE
                             fields[3] = "TRUE"; // Set isEquipped to TRUE after buying
                             ui->errorLabel->setText("Bob Skin Bought!");
@@ -522,7 +534,7 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
                     }
                     lines.append(line);
                 }
-                // Close the skin file after reading
+                // closes the skin file after reading
                 skinFile.close();
 
                 if (!skinFound) {
@@ -530,7 +542,7 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
                     return;
                 }
 
-                // Write the modified lines back to the CSV file
+                // Write the modified lines back to the file
                 if (!skinFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
                     qDebug() << "Failed to open skin data file for writing:" << skinFile.errorString();
                     return;
@@ -544,7 +556,7 @@ void itemShopWindow::on_skin3_buy_equip_clicked()
                 qDebug() << "Failed to open skin file for reading and writing. Error:" << skinFile.errorString();
             }
 
-            // Write the updated coins back to the coin file
+            // writes the updated coins back to the coin file
             coinFile.seek(0);
             coinFile.resize(0);
             QTextStream coinOut(&coinFile);
