@@ -18,10 +18,10 @@ int Enemy::continous_enemies=0;
 
 Enemy::Enemy(Player &player) : m_player(player) {
 
-    enemies.append(this);
+    enemies.append(this); // adds the current enemy object to the list of enemies
 
 
-    // hasRect == 0 means has rectangle
+    // randomizes enemy shape and spikes
     int hasRect = QRandomGenerator::global()->bounded(0, 3);
     int randomRectHeight = QRandomGenerator::global()->bounded(30, 45);
     int numOfSpikes = QRandomGenerator::global()->bounded(0, 5);
@@ -30,6 +30,7 @@ Enemy::Enemy(Player &player) : m_player(player) {
         randomRectHeight = 0;
     }
 
+    // creates polygon for single spike shape
     QPolygonF polygon;
     polygon << QPointF(0, 60) << QPointF(30, 0) << QPointF(60, 60);
     QGraphicsPolygonItem *singlePolygon = new QGraphicsPolygonItem(polygon);
@@ -55,21 +56,25 @@ Enemy::Enemy(Player &player) : m_player(player) {
     }
 
     if (hasRect == 0) {
+        // creates a rectangle and adds it to the spikes group
         QGraphicsRectItem *rectangle = new QGraphicsRectItem(0, 60, 60, randomRectHeight);
         rectangle->setBrush(QColor(255,20,147));
         rectangle->setPen(QPen(Qt::white));
         spikesGroup->addToGroup(rectangle);
-        spikesGroup->addToGroup(singlePolygon);
+        spikesGroup->addToGroup(singlePolygon); // adds single spike polygon to the group
     }
 
-    addToGroup(spikesGroup);
+    addToGroup(spikesGroup); // adds spikes group to the enemy
 
+    // sets position for the enemy
     setPos(1600, 610 - randomRectHeight);
 
+    // sets up a timer to move the enemy
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
     timer->start(30);
 
+    // initialize death sound and audio
     death_sound = new QMediaPlayer();
     death_audio = new QAudioOutput();
     death_sound->setSource(QUrl("qrc:/Sound/death_sound.mp3"));
@@ -111,9 +116,10 @@ Enemy::Enemy(Player &player) : m_player(player) {
 }
 
 void Enemy::move() {
-    setPos(x() - 15, y()); //change speed of spikes ya 7obal
-    QList<QGraphicsItem*> colliding_items = collidingItems();
+    setPos(x() - 15, y()); // move the enemy hoirzontally
+    QList<QGraphicsItem*> colliding_items = collidingItems(); // checks for collisions
 
+    // removes enemy if it moves out of the scene
     if (x() + boundingRect().width() < boundingRect().width()) {
         scene()->removeItem(this);
         enemies.removeOne(this);
@@ -121,12 +127,13 @@ void Enemy::move() {
         return;
     }
 
+    // checks for collisions with the player
     for (int i = 0; i < colliding_items.size(); ++i) {
         if (typeid(*(colliding_items[i])) == typeid(m_player)) {
             death_sound->play();
             death_sound->play();
-            m_player.setPosition(300,500);
-            m_player.numOfAttempts++;
+            m_player.setPosition(300,500); // resets player position
+            m_player.numOfAttempts++; // increase player attempts count
             m_player.showAttempts();
             player_hit();
 
@@ -138,7 +145,7 @@ void Enemy::move() {
 void Enemy::player_hit()
 {
 
-
+    // stops level music if playing and restarts after a delay
     if (level2::level2_music && level2::level2_music->isPlaying() == QMediaPlayer::PlayingState) {
         level2::level2_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
@@ -167,30 +174,33 @@ void Enemy::player_hit()
         });
     }
 
-    continous_enemies=0;
+    continous_enemies=0; // resets
 
+    // removes and deletes enemies
     foreach(Enemy*enemy, enemies){
         if(enemy->scene())
             enemy->scene()->removeItem(enemy);
     delete enemy;
     }
 
-    enemies.clear();
+    enemies.clear(); // clears the list of enemies
 
+    // removes and deletes coins
     foreach(coin*Coin,coin::coins){
     if(Coin->scene())
             Coin->scene()->removeItem(Coin);
         delete Coin;
     }
-    coin::coins.clear();
+    coin::coins.clear(); // clears the list of coins
 
+    // removes and deletes platforms
     foreach(Platform*platform, Platform::platforms){
         if(platform->scene())
             platform->scene()->removeItem(platform);
         delete platform;
     }
 
-    Platform::platforms.clear();
+    Platform::platforms.clear(); // clears the list of platforms
 
 
 }
