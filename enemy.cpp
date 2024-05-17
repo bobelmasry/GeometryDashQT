@@ -90,6 +90,7 @@ Enemy::Enemy(Player &player) : m_player(player) {
 
     else if(continous_enemies>30&&level_base::level==2)
     {
+        continous_enemies=0;
         level2::level_complete();
     }
 
@@ -103,6 +104,7 @@ Enemy::Enemy(Player &player) : m_player(player) {
 
     else if(continous_enemies>150&&level_base::level==3)
     {
+        continous_enemies=0;
         level3::level_complete();
     }
 

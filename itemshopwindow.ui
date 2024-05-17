@@ -26,7 +26,7 @@
     <string>Back</string>
    </property>
   </widget>
-  <widget class="QLabel" name="skin1Label">
+  <widget class="QLabel" name="skin1_image">
    <property name="geometry">
     <rect>
      <x>48</x>
@@ -36,10 +36,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/Cube001.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="skin2Label">
+  <widget class="QLabel" name="skin2_image">
    <property name="geometry">
     <rect>
      <x>268</x>
@@ -49,10 +49,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/Cube002.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="skin3Label">
+  <widget class="QLabel" name="skin3_image">
    <property name="geometry">
     <rect>
      <x>478</x>
@@ -62,10 +62,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/images/Cube012.png&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="skin1Button">
+  <widget class="QPushButton" name="skin1_buy_equip">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -78,7 +78,7 @@
     <string>PushButton</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="skin2Button">
+  <widget class="QPushButton" name="skin2_buy_equip">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -91,7 +91,7 @@
     <string>PushButton</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="skin3Button">
+  <widget class="QPushButton" name="skin3_buy_equip">
    <property name="geometry">
     <rect>
      <x>490</x>
@@ -158,7 +158,7 @@
     <string>Bob</string>
    </property>
   </widget>
-  <widget class="QLabel" name="skin1Details">
+  <widget class="QLabel" name="skin1_price">
    <property name="geometry">
     <rect>
      <x>60</x>
@@ -171,7 +171,7 @@
     <string>TextLabel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="skin2Details">
+  <widget class="QLabel" name="skin2_price">
    <property name="geometry">
     <rect>
      <x>290</x>
@@ -184,7 +184,7 @@
     <string>TextLabel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="skin3Details">
+  <widget class="QLabel" name="skin3_price">
    <property name="geometry">
     <rect>
      <x>490</x>

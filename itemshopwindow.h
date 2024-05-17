@@ -14,6 +14,9 @@ class itemShopWindow : public QDialog
 public:
     explicit itemShopWindow(QWidget *parent = nullptr);
     ~itemShopWindow();
+    bool copyFile(const QString &sourceFile, const QString &destinationFile);
+    void set_upUI();
+    void set_up_images();
 
 private slots:
     void on_backButton_clicked();

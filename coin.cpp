@@ -8,6 +8,7 @@
 #include <QTextStream>
 #include <QCoreApplication>
 #include <typeinfo>
+#include <QStandardPaths>
 
 QList<coin*>coin::coins;
 
@@ -35,7 +36,10 @@ coin::coin() {
 }
 
 void coin::updateTextFile() {
-    QFile file("D://python_projects//other shit//CS//GeometryDashQT//images//data.txt");
+    QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QString filePath = desktopDir + "/data.txt";
+
+    QFile file(filePath);
     if (file.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug() << "File opened successfully.";
         QTextStream in(&file);
@@ -49,9 +53,8 @@ void coin::updateTextFile() {
         file.close();
         qDebug() << "File closed.";
     } else {
-        //qDebug() << "Failed to open file for reading and writing. Error:" << file.errorString();
+        qDebug() << "Failed to open file for reading and writing. Error:" << file.errorString();
     }
-
 }
 
 
