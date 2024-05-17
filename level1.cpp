@@ -23,7 +23,7 @@ QTimer* level1::coin_timer;
 QTimer* level1::elapsed_time;
 QTimer* level1::platform_timer;
 
-// constructor for level1 class
+// constructor
 level1::level1()
 {
     // set the level to 1
@@ -116,8 +116,7 @@ void level1::level_complete()
         coin_timer->stop();
     if (platform_timer->isActive())
         platform_timer->stop();
-    // if (enemy_timer->isActive()) // uncomment if enemy_timer is used
-    //     enemy_timer->stop();
+
 
     qDebug() << "stopped timers";
 
