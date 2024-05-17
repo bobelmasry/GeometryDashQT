@@ -13,42 +13,52 @@
 #include "level4.h"
 #include "level5.h"
 
+// list to store all platform objects created
 QList<Platform *> Platform::platforms;
 
+// variable to track continuous platforms
 int Platform::continious_plats=0;
 
+// constructor
 Platform::Platform()
 {
-    platforms.append(this);
+    platforms.append(this); // add this platform to the list of platforms
 
+    // create a group for platform elements
     QGraphicsItemGroup *platformGroup = new QGraphicsItemGroup();
+
 
     int rectHeight = 70; // Fixed height for the rectangle
     int squareHeight = 10; // Fixed height for the square on top of the rectangle
     int gap = 30; // Small gap between the rectangle and the square to ensure separate collisions
 
+    // create rectangle and square shapes
     QGraphicsRectItem *rectangle = new QGraphicsRectItem(0, 60, 70, rectHeight);
-
     QGraphicsRectItem *square = new QGraphicsRectItem(0, 60 - squareHeight - gap, 70, squareHeight);
 
+    // set brush and pen colors for rectangle and square
     rectangle->setBrush(QColor(255, 20, 147));
     square->setBrush(QColor(255, 20, 147));
     rectangle->setPen(QPen(Qt::blue));
     square->setPen(QPen(Qt::blue));
 
+    // setup death sound and audio output
     death_sound = new QMediaPlayer();
     death_audio = new QAudioOutput();
     death_sound->setSource(QUrl("qrc:/Sound/death_sound.mp3"));
     death_sound->setAudioOutput(death_audio);
     death_audio->setVolume(50);
 
+    // add rectangle and square to the platform group
     platformGroup->addToGroup(rectangle);
     platformGroup->addToGroup(square);
     addToGroup(platformGroup);
 
+    // set initial position of the platform
     setPos(1600, 610 - rectHeight);
 
 
+    // setup a timer to move the platform
     QTimer *movement_timer = new QTimer(this);
     connect(movement_timer, SIGNAL(timeout()), this, SLOT(move()));
     movement_timer->start(30);
@@ -84,6 +94,8 @@ Platform::Platform()
         continious_plats=0;
     }
 
+    // level 5 completion conditions
+
     if(++continious_plats<150&&level_base::level==5)
     {
         continious_plats++;
@@ -98,21 +110,25 @@ Platform::Platform()
 
 }
 
+// function to move the platform
 void Platform::move()
 {
-    setPos(x() - 15, y());
+    setPos(x() - 15, y()); // move the platform leftwards
 
+    // check if the platform is out of the scene bounds
     if (x() + boundingRect().width() < boundingRect().width()) {
-        scene()->removeItem(this);
-        platforms.removeOne(this);
-        delete this;
+        scene()->removeItem(this); // remove the platform from the scene
+        platforms.removeOne(this); // remove the platform from the list of platforms
+        delete this; // delete the platform object
         return;
     }
 
+    // get the rectangle and square from the platform group
     QGraphicsItemGroup *platformGroup = static_cast<QGraphicsItemGroup *>(childItems().at(0));
     QGraphicsRectItem *rectangle = static_cast<QGraphicsRectItem *>(platformGroup->childItems().at(0));
     QGraphicsRectItem *square = static_cast<QGraphicsRectItem *>(platformGroup->childItems().at(1));
 
+    // check collisions with player
     QList<QGraphicsItem *> colliding_items = collidingItems();
 
     bool playerLanded = false;
@@ -122,16 +138,13 @@ void Platform::move()
             Player *player = dynamic_cast<Player *>(colliding_items[i]);
 
             if (square->collidesWithItem(player)) {
-                //qDebug() << "Collision with square detected";
-                if (player->getYVelocity() > 0) { // Only if the player is falling
-                    player->setYVelocity(0); // Reset vertical velocity
-                    player->setInAir(false); // Player is no longer in the air
+                if (player->getYVelocity() > 0) { //only if the player is falling
+                    player->setYVelocity(0); // reset vertical velocity
+                    player->setInAir(false); // player is no longer in the air
                     player->setPos(player->x(), square->scenePos().y() - player->pixmap().height());
-                    //qDebug() << "Player landed on the square";
                 }
                 playerLanded = true;
             } else if (rectangle->collidesWithItem(player)) {
-               // qDebug() << "Collision with rectangle detected";
                 player->setPosition(300,500);
                 player->numOfAttempts++;
                 player->showAttempts();
@@ -143,7 +156,7 @@ void Platform::move()
     }
 
    if (!playerLanded) {
-        // If the player is no longer colliding with the platform, make them fall
+        // if the player is no longer colliding with the platform, make them fall
         for (Platform* platform : Platform::platforms) {
             QList<QGraphicsItem *> collidingWithPlatform = platform->collidingItems();
             for (QGraphicsItem *item : collidingWithPlatform) {
@@ -156,9 +169,11 @@ void Platform::move()
     }
 }
 
+// function to handle player hit
 void Platform::player_hit()
 {
 
+    // stop level music based on current level
     if (level1::level1_music&& level1::level1_music->isPlaying() == QMediaPlayer::PlayingState) {
         level1::level1_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
@@ -204,7 +219,7 @@ void Platform::player_hit()
     foreach(Platform*platform, platforms){
         if(platform->scene())
             platform->scene()->removeItem(platform);
-        delete platform;
+        delete platform; // deletes platform
     }
 
     platforms.clear();
@@ -214,7 +229,7 @@ void Platform::player_hit()
     foreach(Enemy*enemy, Enemy::enemies){
         if(enemy->scene())
             enemy->scene()->removeItem(enemy);
-        delete enemy;
+        delete enemy; // deletes enemy
     }
 
     Enemy::enemies.clear();
@@ -222,7 +237,7 @@ void Platform::player_hit()
     foreach(coin*Coin,coin::coins){
         if(Coin->scene())
             Coin->scene()->removeItem(Coin);
-        delete Coin;
+        delete Coin; // deletes coin
     }
     coin::coins.clear();
 
