@@ -3,7 +3,6 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QPolygonF>
-#include "level1.h"
 #include <coin.h>
 #include <QApplication>
 #include "platform.h"
@@ -11,6 +10,7 @@
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "level5.h"
 
 QList<Enemy*>Enemy::enemies;
 
@@ -135,39 +135,35 @@ void Enemy::move() {
 
 void Enemy::player_hit()
 {
-    QMediaPlayer* level1_music = level1::getLevel1Music();
-    if (level1_music) {
-        level1_music->stop(); // Stop the music
-        QTimer::singleShot(1000, [level1_music]() {
-            level1_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
-        });
 
-    }
 
-    if (level2::level2_music) {
+    if (level2::level2_music && level2::level2_music->isPlaying() == QMediaPlayer::PlayingState) {
         level2::level2_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
             level2::level2_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
         });
-
     }
 
-    if (level3::level3_music) {
+    if (level3::level3_music && level3::level3_music->isPlaying() == QMediaPlayer::PlayingState) {
         level3::level3_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
             level3::level3_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
         });
-
     }
 
-    if (level4::level4_music) {
+    if (level4::level4_music && level4::level4_music->isPlaying() == QMediaPlayer::PlayingState) {
         level4::level4_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
             level4::level4_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
         });
-
     }
 
+    if (level5::level5_music && level5::level5_music->isPlaying() == QMediaPlayer::PlayingState) {
+        level5::level5_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level5::level5_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+    }
 
     continous_enemies=0;
 

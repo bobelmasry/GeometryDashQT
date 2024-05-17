@@ -31,6 +31,8 @@ private slots:
 
     void on_level4Button_clicked();
 
+    void on_level5Button_clicked();
+
 private:
     Ui::MainWindow *ui;
     QAudioOutput* main_theme = new QAudioOutput();

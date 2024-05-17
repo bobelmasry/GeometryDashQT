@@ -17,6 +17,7 @@ SOURCES += \
     level2.cpp \
     level3.cpp \
     level4.cpp \
+    level5.cpp \
     level_base.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     level2.h \
     level3.h \
     level4.h \
+    level5.h \
     level_base.h \
     mainwindow.h \
     platform.h \

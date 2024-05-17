@@ -19,7 +19,7 @@ Player::Player(QGraphicsScene *scene)
     , yVelocity(0)
     , in_air(false)
 {
-    QFile file(":/images/skinData.csv");
+    QFile file(":/images/skinData.txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << file.errorString();
         return;

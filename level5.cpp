@@ -1,4 +1,4 @@
-#include "level4.h"
+#include "level5.h"
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -12,17 +12,17 @@
 
 
 
-QGraphicsScene*level4::scene;
-QGraphicsView*level4::view;
-QTimer*level4::coin_timer;
-QTimer*level4::platform_timer;
-QTimer*level4::enemy_timer;
+QGraphicsScene*level5::scene;
+QGraphicsView*level5::view;
+QTimer*level5::coin_timer;
+QTimer*level5::platform_timer;
+QTimer*level5::enemy_timer;
 
-QMediaPlayer*level4::level4_music=nullptr;
+QMediaPlayer*level5::level5_music=nullptr;
 
-level4::level4()
+level5::level5()
 {
-    level_base::level=4;
+    level_base::level=5;
     scene = new QGraphicsScene();
 
     view = new QGraphicsView(scene);
@@ -50,8 +50,8 @@ level4::level4()
     QObject::connect(coin_timer, SIGNAL(timeout()), player, SLOT(createCoin()));
     QObject::connect(platform_timer, SIGNAL(timeout()), player, SLOT(createPlatform()));
 
-    enemy_timer->start(2500);
-    platform_timer->start(1200);
+    enemy_timer->start(1500);
+    platform_timer->start(800);
     coin_timer->start(5000);
 
     view->showFullScreen();
@@ -59,7 +59,7 @@ level4::level4()
 
 }
 
-void level4::set_level(QGraphicsScene*scene,QGraphicsView*view)
+void level5::set_level(QGraphicsScene*scene,QGraphicsView*view)
 {
     scene->setSceneRect(0, 0, 1560, 870);
 
@@ -67,13 +67,13 @@ void level4::set_level(QGraphicsScene*scene,QGraphicsView*view)
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    QPixmap backgroundImage(":/images/level4_background.png");
+    QPixmap backgroundImage(":/images/level5_background.png");
     backgroundImage = backgroundImage.scaled(scene->width(), scene->height());
     QGraphicsPixmapItem *background = new QGraphicsPixmapItem(backgroundImage);
     scene->addItem(background);
     background->setPos(0, 0);
 
-    QPixmap level_floor_image(":/images/level4_floor.png");
+    QPixmap level_floor_image(":/images/level5_floor.png");
     level_floor_image=level_floor_image.scaled(scene->width(),400);
     QGraphicsPixmapItem*level1_floor=new QGraphicsPixmapItem(level_floor_image);
     level1_floor->setPos(0,scene->height()-200);
@@ -82,7 +82,7 @@ void level4::set_level(QGraphicsScene*scene,QGraphicsView*view)
 
 }
 
-void level4::play_music()
+void level5::play_music()
 {
     //code to play sound when clicking on level
     start_level_audio->setSource(QUrl("qrc:/Sound/start_level_audio.mp3"));
@@ -91,15 +91,15 @@ void level4::play_music()
     start_level_audio->play();
 
     // Initialize level1_music
-    level4_music = new QMediaPlayer();
-    level4_music->setSource(QUrl("qrc:/Sound/level4_music.mp3"));
-    level4_music->setAudioOutput(electroman);
-    electroman->setVolume(50);
+    level5_music = new QMediaPlayer();
+    level5_music->setSource(QUrl("qrc:/Sound/level5_music.mp3"));
+    level5_music->setAudioOutput(hexagon);
+    hexagon->setVolume(50);
 
     // Delay the level1_music audio
     QTimer::singleShot(1000, this, []() {
-        if (level4_music) {
-            level4_music->play();
+        if (level5_music) {
+            level5_music->play();
         }
     });
 
@@ -107,7 +107,7 @@ void level4::play_music()
 
 
 
-void level4::level_complete()
+void level5::level_complete()
 {
     qDebug() << "entered level complete";
 
@@ -158,10 +158,10 @@ void level4::level_complete()
 
             MainWindow *windowObj = new MainWindow();
             windowObj->show();
-            if (level4::level4_music)
-                level4::level4_music->stop();
+            if (level5::level5_music)
+                level5::level5_music->stop();
         });
     });
 }
 
-level4::~level4() {}
+level5::~level5() {}

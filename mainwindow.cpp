@@ -1,10 +1,12 @@
 #include "mainwindow.h"
-#include "level4.h"
+#include "itemshopwindow.h"
 #include "ui_mainwindow.h"
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
-#include "itemshopwindow.h"
+#include "level4.h"
+#include "level5.h"
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -84,6 +86,14 @@ void MainWindow::on_level4Button_clicked()
 {
     hide();
     level4*level4obj=new level4();
+    main_menu_music->stop();
+}
+
+
+void MainWindow::on_level5Button_clicked()
+{
+    hide();
+    level5*level5obj=new level5();
     main_menu_music->stop();
 }
 

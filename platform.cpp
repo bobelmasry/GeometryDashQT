@@ -6,11 +6,13 @@
 #include <QDebug>
 #include "coin.h"
 #include "enemy.h"
-#include "level2.h"
 #include "level_base.h"
 #include "level1.h"
+#include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "level5.h"
+
 QList<Platform *> Platform::platforms;
 
 int Platform::continious_plats=0;
@@ -23,11 +25,11 @@ Platform::Platform()
 
     int rectHeight = 70; // Fixed height for the rectangle
     int squareHeight = 10; // Fixed height for the square on top of the rectangle
-    int gap = 20; // Small gap between the rectangle and the square to ensure separate collisions
+    int gap = 30; // Small gap between the rectangle and the square to ensure separate collisions
 
-    QGraphicsRectItem *rectangle = new QGraphicsRectItem(0, 60, 100, rectHeight);
+    QGraphicsRectItem *rectangle = new QGraphicsRectItem(0, 60, 70, rectHeight);
 
-    QGraphicsRectItem *square = new QGraphicsRectItem(0, 60 - squareHeight - gap, 100, squareHeight);
+    QGraphicsRectItem *square = new QGraphicsRectItem(0, 60 - squareHeight - gap, 70, squareHeight);
 
     rectangle->setBrush(QColor(255, 20, 147));
     square->setBrush(QColor(255, 20, 147));
@@ -69,32 +71,30 @@ Platform::Platform()
     }
 
 
+    //level 4 completion conditoins
 
-    //level 2 completion condition
-
-    if(++continious_plats<40&&level_base::level==2)
+    if(++continious_plats<100&&level_base::level==4)
     {
         continious_plats++;
         qDebug()<<continious_plats;
     }
-
-    else if(continious_plats>40&&level_base::level==2)
+    else if(++continious_plats>100&&level_base::level==4)
     {
-        level2::level_complete();
+        level4::level_complete();
         continious_plats=0;
     }
 
-
-    if(++continious_plats<150&&level_base::level==4)
+    if(++continious_plats<100&&level_base::level==5)
     {
         continious_plats++;
         qDebug()<<continious_plats;
     }
-    else if(++continious_plats>150&&level_base::level==4)
+    else if(++continious_plats>100&&level_base::level==5)
     {
-        level2::level_complete();
+        level4::level_complete();
         continious_plats=0;
     }
+
 
 }
 
@@ -159,7 +159,7 @@ void Platform::move()
 void Platform::player_hit()
 {
 
-    if (level1::level1_music) {
+    if (level1::level1_music&& level1::level1_music->isPlaying() == QMediaPlayer::PlayingState) {
         level1::level1_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
             level1::level1_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
@@ -167,7 +167,7 @@ void Platform::player_hit()
 
     }
 
-    if (level2::level2_music) {
+    if (level2::level2_music&& level2::level2_music->isPlaying() == QMediaPlayer::PlayingState) {
         level2::level2_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
             level2::level2_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
@@ -175,7 +175,7 @@ void Platform::player_hit()
 
     }
 
-    if (level3::level3_music) {
+    if (level3::level3_music&& level3::level3_music->isPlaying() == QMediaPlayer::PlayingState) {
         level3::level3_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
             level3::level3_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
@@ -183,12 +183,19 @@ void Platform::player_hit()
 
     }
 
-    if (level4::level4_music) {
+    if (level4::level4_music&& level4::level4_music->isPlaying() == QMediaPlayer::PlayingState) {
         level4::level4_music->stop(); // Stop the music
         QTimer::singleShot(1000, []() {
             level4::level4_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
         });
 
+    }
+
+    if (level5::level5_music && level5::level5_music->isPlaying() == QMediaPlayer::PlayingState) {
+        level5::level5_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level5::level5_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
     }
 
 

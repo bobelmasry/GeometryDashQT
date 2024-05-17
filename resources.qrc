@@ -17,7 +17,6 @@
         <file>images/Cube001.png</file>
         <file>images/Cube002.png</file>
         <file>images/Cube012.png</file>
-        <file>images/skinData.csv</file>
         <file>images/square.png</file>
         <file>Sound/level2 music.mp3</file>
         <file>Sound/level3_music.mp3</file>
@@ -26,5 +25,9 @@
         <file>images/level4_floor.png</file>
         <file>images/level3_background.png</file>
         <file>images/level3_floor.png</file>
+        <file>images/skinData.txt</file>
+        <file>images/level5_background.png</file>
+        <file>images/level5_floor.png</file>
+        <file>Sound/level5_music.mp3</file>
     </qresource>
 </RCC>
