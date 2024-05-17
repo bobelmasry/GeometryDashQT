@@ -2,7 +2,6 @@
 #define LEVEL1_H
 
 #include "level_base.h"
-#include "player.h"
 #include "qtimer.h"
 #include <QDialog>
 #include <QMediaPlayer>

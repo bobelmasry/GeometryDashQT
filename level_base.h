@@ -8,6 +8,8 @@ public:
     static int level;
     static int elapsedSec;
     static void elapsed_timer_creator(QGraphicsScene *scene);
+    void set_level();
+    void update_timer();
 };
 
 #endif // LEVEL_BASE_H

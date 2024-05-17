@@ -6,9 +6,6 @@
 #include "level3.h"
 #include "level4.h"
 #include "level5.h"
-
-
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -30,8 +27,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->level2Button->setIconSize(QSize(120,120));
 
 
+    QPixmap level3_image(":/images/level3 image.png");
+    QIcon Button_Image3 (level3_image);
+    ui->level3Button->setIcon(Button_Image3);
+    ui->level3Button->setIconSize(QSize(120,120));
 
-    ui->itemShopButton->setStyleSheet("color: white;" "background-color: white;");
+    QPixmap level4_image(":/images/level4 image.png");
+    QIcon Button_Image4 (level4_image);
+    ui->level4Button->setIcon(Button_Image4);
+    ui->level4Button->setIconSize(QSize(120,120));
+
+    QPixmap level5_image(":/images/level5 image.png");
+    QIcon Button_Image5 (level5_image);
+    ui->level5Button->setIcon(Button_Image5);
+    ui->level5Button->setIconSize(QSize(120,120));
+
+
+    //ui->itemShopButton->setStyleSheet("color: white;" "background-color: white;");
 
     main_menu_music->setSource(QUrl("qrc:/Sound/Main_Music.mp3"));
     main_menu_music->setAudioOutput(main_theme);

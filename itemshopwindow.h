@@ -21,11 +21,11 @@ public:
 private slots:
     void on_backButton_clicked();
 
-    void on_skin1Button_clicked();
+    void on_skin1_buy_equip_clicked();
 
-    void on_skin2Button_clicked();
+    void on_skin2_buy_equip_clicked();
 
-    void on_skin3Button_clicked();
+    void on_skin3_buy_equip_clicked();
 
 private:
     Ui::itemShopWindow *ui;

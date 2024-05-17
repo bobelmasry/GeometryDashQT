@@ -1,4 +1,4 @@
 skinName,Price,isOwned,isEquipped,imagePath
-Crusher,50,FALSE,FALSE,"""://images/Cube001.png"""
-Destroyer,150,FALSE,FALSE,"""://images/Cube012.png"""
-Bob,500,FALSE,FALSE,"""://images/Cube002.png"""
+Crusher,50,FALSE,FALSE,"""://images/crusher_skin.png"""
+Destroyer,150,FALSE,FALSE,"""://images/destroyer_skin.png"""
+Bob,500,FALSE,FALSE,"""://images/bob_skin.png"""

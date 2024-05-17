@@ -18,17 +18,23 @@ itemShopWindow::itemShopWindow(QWidget *parent)
     ui->setupUi(this);
 
     QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-    QString skinDataSender = ":/images/skinData.txt";
-    QString skinDataReceiver = desktopDir + "/skinData.txt"; // Verify the correctness of this path
+    QString skinDataReceiver = desktopDir + "/skinData.txt";
 
-    if (!copyFile(skinDataSender, skinDataReceiver)) {
-        qDebug() << "Failed to copy skin data file.";
-        return;
+    // Check if the file already exists
+    QFile file(skinDataReceiver);
+    if (!file.exists()) {
+        QString skinDataSender = ":/images/skinData.txt";
+
+        // Copy the file only if it doesn't exist on the desktop
+        if (!copyFile(skinDataSender, skinDataReceiver)) {
+            qDebug() << "Failed to copy skin data file.";
+            return;
+        }
     }
 
     set_upUI();
-    set_up_images();
 
+    set_up_images();
 }
 
 bool itemShopWindow::copyFile(const QString &sourceFile, const QString &destinationFile)
@@ -63,9 +69,14 @@ bool itemShopWindow::copyFile(const QString &sourceFile, const QString &destinat
 
 void itemShopWindow::set_up_images()
 {
-    ui->skin1_image->setPixmap(QPixmap(":/images/Cube001.png"));
-    ui->skin2_image->setPixmap(QPixmap(":/images/Cube002.png"));
-    ui->skin3_image->setPixmap(QPixmap(":/images/Cube012.png"));
+    QPixmap skin1(":/images/crusher_skin.png");
+    QPixmap skin2(":/images/destroyer_skin.png");
+    QPixmap skin3(":/images/bob_skin.png");
+
+    ui->skin1_image->setPixmap(skin1.scaled(100, 100, Qt::KeepAspectRatio));
+    ui->skin2_image->setPixmap(skin2.scaled(100, 100, Qt::KeepAspectRatio));
+    ui->skin3_image->setPixmap(skin3.scaled(100, 100, Qt::KeepAspectRatio));
+
 }
 
 
@@ -73,14 +84,34 @@ void itemShopWindow::set_upUI()
 {
     QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
     QString skinDataFilePath = desktopDir + "/skinData.txt";
+    QString coinDataFilePath = desktopDir + "/data.txt";
 
+    // Open skin data file
     QFile skinDataFile(skinDataFilePath);
     if (!skinDataFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Failed to open skin data file: " << skinDataFile.errorString();
         return;
     }
 
+    // Open coin data file
+    QFile readCoins(coinDataFilePath);
+    if (!readCoins.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open coin data file: " << readCoins.errorString();
+        return;
+    }
+
+    // Read coin data
+    QString coin_num;
+    QTextStream coinDataStream(&readCoins);
+    while (!coinDataStream.atEnd()) {
+        coin_num = coinDataStream.readLine().trimmed();
+    }
+
+    ui->coinLabel->setText("Coins: " + coin_num);
+
+    // Read skin data
     QTextStream skinDataIn(&skinDataFile);
+    // Process skin data as needed
 
     // Read the first line to skip the header if there's one
     QString headerLine = skinDataIn.readLine();
@@ -155,13 +186,13 @@ void itemShopWindow::on_backButton_clicked()
 }
 
 
-void itemShopWindow::on_skin1Button_clicked()
+void itemShopWindow::on_skin1_buy_equip_clicked()
 {
     QString buttonText = ui->skin1_buy_equip->text();
     qDebug() << "Button text: " << buttonText;
 
     QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-    QString skinDataFilePath = desktopDir + "/skinData.csv";
+    QString skinDataFilePath = desktopDir + "/skinData.txt";
     QString coinDataFilePath = desktopDir + "/data.txt";
 
     if (buttonText == "Equip" || buttonText == "Unequip") {
@@ -268,13 +299,13 @@ void itemShopWindow::on_skin1Button_clicked()
     }
 }
 
-void itemShopWindow::on_skin2Button_clicked()
+void itemShopWindow::on_skin2_buy_equip_clicked()
 {
     QString buttonText = ui->skin2_buy_equip->text();
     qDebug() << "Button text: " << buttonText;
 
     QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-    QString skinDataFilePath = desktopDir + "/skinData.csv";
+    QString skinDataFilePath = desktopDir + "/skinData.txt";
     QString coinDataFilePath = desktopDir + "/data.txt";
 
     if (buttonText == "Equip" || buttonText == "Unequip") {
@@ -383,13 +414,13 @@ void itemShopWindow::on_skin2Button_clicked()
 }
 
 
-void itemShopWindow::on_skin3Button_clicked()
+void itemShopWindow::on_skin3_buy_equip_clicked()
 {
     QString buttonText = ui->skin3_buy_equip->text();
     qDebug() << "Button text: " << buttonText;
 
     QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-    QString skinDataFilePath = desktopDir + "/skinData.csv";
+    QString skinDataFilePath = desktopDir + "/skinData.txt";
     QString coinDataFilePath = desktopDir + "/data.txt";
 
     if (buttonText == "Equip" || buttonText == "Unequip") {

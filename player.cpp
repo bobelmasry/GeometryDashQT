@@ -8,6 +8,7 @@
 #include "coin.h"
 #include "enemy.h"
 #include "platform.h"
+#include <QStandardPaths>
 
 const qreal gravity = 15;
 const qreal jumpVelocity = -85;
@@ -19,13 +20,16 @@ Player::Player(QGraphicsScene *scene)
     , yVelocity(0)
     , in_air(false)
 {
-    QFile file(":/images/skinData.txt");
+
+
+    QString desktopDir = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QString filePath = desktopDir + "/skinData.txt";
+    QFile file(filePath);
+
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << file.errorString();
         return;
     }
-
-
 
     QTextStream in(&file);
     QString line;
@@ -48,7 +52,7 @@ Player::Player(QGraphicsScene *scene)
         setPixmap(QPixmap(equippedSkinImagePath).scaled(100, 100));
     } else {
         setPixmap(QPixmap(":/images/square.png").scaled(100, 100));
-        //qDebug() << "No skin is currently equipped.";
+        // qDebug() << "No skin is currently equipped.";
     }
     setFlag(QGraphicsItem::ItemIsFocusable);
     setFocus();
@@ -129,10 +133,24 @@ void Player::createCoin()
 
 void Player::createPlatform()
 {
-    Platform *block = new Platform();
-    scene()->addItem(block);
+    int randomX = QRandomGenerator::global()->bounded(600, 800 - pixmap().width());
 
+    // Make sure that the platform isn't colliding with any enemies on spawn
+    QList<QGraphicsItem*> collidingItems;
+    do {
+        Platform *block = new Platform(); // Create a new platform instance
+        block->setPos(randomX + 1300, 540); // Set the position of the platform
+        collidingItems = block->collidingItems(); // Check for collisions with enemies
+        if (!collidingItems.isEmpty()) {
+            randomX = QRandomGenerator::global()->bounded(400, 600 - pixmap().width());
+        }
+        else {
+            scene()->addItem(block); // Add the platform to the scene if there are no collisions
+        }
+    } while (!collidingItems.isEmpty()); // Repeat until no collisions are detected
 }
+
+
 bool Player::isInAir() const
 {
     return in_air;

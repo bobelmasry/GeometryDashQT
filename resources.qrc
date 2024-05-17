@@ -14,9 +14,6 @@
         <file>images/level2_floor.png</file>
         <file>Sound/level1_music.mp3</file>
         <file>images/data.txt</file>
-        <file>images/Cube001.png</file>
-        <file>images/Cube002.png</file>
-        <file>images/Cube012.png</file>
         <file>images/square.png</file>
         <file>Sound/level2 music.mp3</file>
         <file>Sound/level3_music.mp3</file>
@@ -29,5 +26,11 @@
         <file>images/level5_background.png</file>
         <file>images/level5_floor.png</file>
         <file>Sound/level5_music.mp3</file>
+        <file>images/level3 image.png</file>
+        <file>images/level5 image.png</file>
+        <file>images/level4 image.png</file>
+        <file>images/bob_skin.png</file>
+        <file>images/crusher_skin.png</file>
+        <file>images/destroyer_skin.png</file>
     </qresource>
 </RCC>

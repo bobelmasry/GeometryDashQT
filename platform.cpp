@@ -63,7 +63,7 @@ Platform::Platform()
         qDebug()<<continious_plats;
     }
 
-    else if(continious_plats>40&&level_base::level==1)
+    else if(continious_plats>60&&level_base::level==1)
     {
          qDebug()<<"called level_complete";
         level1::level_complete();
@@ -73,23 +73,23 @@ Platform::Platform()
 
     //level 4 completion conditoins
 
-    if(++continious_plats<100&&level_base::level==4)
+    if(++continious_plats<200&&level_base::level==4)
     {
         continious_plats++;
         qDebug()<<continious_plats;
     }
-    else if(++continious_plats>100&&level_base::level==4)
+    else if(++continious_plats>200&&level_base::level==4)
     {
         level4::level_complete();
         continious_plats=0;
     }
 
-    if(++continious_plats<100&&level_base::level==5)
+    if(++continious_plats<150&&level_base::level==5)
     {
         continious_plats++;
         qDebug()<<continious_plats;
     }
-    else if(++continious_plats>100&&level_base::level==5)
+    else if(++continious_plats>150&&level_base::level==5)
     {
         level4::level_complete();
         continious_plats=0;
