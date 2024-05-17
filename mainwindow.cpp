@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "level4.h"
 #include "ui_mainwindow.h"
 #include "level1.h"
 #include "level2.h"
@@ -76,5 +77,13 @@ void MainWindow::on_itemShopButton_clicked()
     itemWindow->show();
     main_menu_music->stop();
 
+}
+
+
+void MainWindow::on_level4Button_clicked()
+{
+    hide();
+    level4*level4obj=new level4();
+    main_menu_music->stop();
 }
 

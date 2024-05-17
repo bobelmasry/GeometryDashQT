@@ -1,11 +1,11 @@
 #ifndef LEVEL3_H
 #define LEVEL3_H
 
+#include "level_base.h"
 #include "qgraphicsscene.h"
 #include <QDialog>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-#include "level1.h"
 
 
 namespace Ui
@@ -13,7 +13,7 @@ namespace Ui
 class level3;
 }
 
-class level3: public QDialog
+class level3: public QDialog, public level_base
 {
     Q_OBJECT
 
@@ -30,9 +30,6 @@ private:
     QMediaPlayer* start_level_audio = new QMediaPlayer();
 
 
-    QAudioOutput* base_after_base= new QAudioOutput();
-
-
     static QGraphicsScene* scene;
     static QGraphicsView* view;
 
@@ -40,7 +37,8 @@ private:
     static QTimer* coin_timer;
     static QTimer* platform_timer;
     static QTimer* player_timer;
-    //static QTimer* elapsed_time;
+
+    QAudioOutput* jumper= new QAudioOutput();
 
     void set_level(QGraphicsScene *scene,QGraphicsView *view) ;
 };

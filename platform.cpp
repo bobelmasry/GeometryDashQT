@@ -7,7 +7,10 @@
 #include "coin.h"
 #include "enemy.h"
 #include "level2.h"
-
+#include "level_base.h"
+#include "level1.h"
+#include "level3.h"
+#include "level4.h"
 QList<Platform *> Platform::platforms;
 
 int Platform::continious_plats=0;
@@ -15,18 +18,6 @@ int Platform::continious_plats=0;
 Platform::Platform()
 {
     platforms.append(this);
-
-    if(++continious_plats<100)
-    {
-        continious_plats++;
-        qDebug()<<continious_plats;
-    }
-
-    else if(continious_plats>100)
-    {
-        level2::level_complete();
-        continious_plats=0;
-    }
 
     QGraphicsItemGroup *platformGroup = new QGraphicsItemGroup();
 
@@ -59,6 +50,52 @@ Platform::Platform()
     QTimer *movement_timer = new QTimer(this);
     connect(movement_timer, SIGNAL(timeout()), this, SLOT(move()));
     movement_timer->start(30);
+
+
+
+    //level 1 completetino condition
+
+    if(++continious_plats<60&&level_base::level==1)
+    {
+        continious_plats++;
+        qDebug()<<continious_plats;
+    }
+
+    else if(continious_plats>40&&level_base::level==1)
+    {
+         qDebug()<<"called level_complete";
+        level1::level_complete();
+        continious_plats=0;
+    }
+
+
+
+    //level 2 completion condition
+
+    if(++continious_plats<40&&level_base::level==2)
+    {
+        continious_plats++;
+        qDebug()<<continious_plats;
+    }
+
+    else if(continious_plats>40&&level_base::level==2)
+    {
+        level2::level_complete();
+        continious_plats=0;
+    }
+
+
+    if(++continious_plats<150&&level_base::level==4)
+    {
+        continious_plats++;
+        qDebug()<<continious_plats;
+    }
+    else if(++continious_plats>150&&level_base::level==4)
+    {
+        level2::level_complete();
+        continious_plats=0;
+    }
+
 }
 
 void Platform::move()
@@ -87,7 +124,7 @@ void Platform::move()
             if (square->collidesWithItem(player)) {
                 //qDebug() << "Collision with square detected";
                 if (player->getYVelocity() > 0) { // Only if the player is falling
-                    player->setYVelocity(-5); // Reset vertical velocity
+                    player->setYVelocity(0); // Reset vertical velocity
                     player->setInAir(false); // Player is no longer in the air
                     player->setPos(player->x(), square->scenePos().y() - player->pixmap().height());
                     //qDebug() << "Player landed on the square";
@@ -105,7 +142,7 @@ void Platform::move()
         }
     }
 
-    if (!playerLanded) {
+   if (!playerLanded) {
         // If the player is no longer colliding with the platform, make them fall
         for (Platform* platform : Platform::platforms) {
             QList<QGraphicsItem *> collidingWithPlatform = platform->collidingItems();
@@ -122,6 +159,13 @@ void Platform::move()
 void Platform::player_hit()
 {
 
+    if (level1::level1_music) {
+        level1::level1_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level1::level1_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+
+    }
 
     if (level2::level2_music) {
         level2::level2_music->stop(); // Stop the music
@@ -130,6 +174,23 @@ void Platform::player_hit()
         });
 
     }
+
+    if (level3::level3_music) {
+        level3::level3_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level3::level3_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+
+    }
+
+    if (level4::level4_music) {
+        level4::level4_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level4::level4_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+
+    }
+
 
     continious_plats=0;
 

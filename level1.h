@@ -1,6 +1,7 @@
 #ifndef LEVEL1_H
 #define LEVEL1_H
 
+#include "level_base.h"
 #include "player.h"
 #include "qtimer.h"
 #include <QDialog>
@@ -14,7 +15,7 @@ namespace Ui {
 class level1;
 }
 
-class level1 : public QDialog
+class level1 : public QDialog, public level_base
 {
     Q_OBJECT
 
@@ -26,10 +27,9 @@ public:
     QTimer *gametimer=new QTimer();
     static void level_complete();
     void play_music();
-    static int elapsedSec;
-    static void elapsed_timer_creator(QGraphicsScene *scene);
     void update_timer(QGraphicsTextItem *elapsedTimeText, int &elapsedSec);
     void set_level(QGraphicsScene *scene,QGraphicsView *view);
+     static QMediaPlayer* level1_music;
 
 
 private:
@@ -38,7 +38,7 @@ private:
     QMediaPlayer* start_level_audio = new QMediaPlayer();
     QAudioOutput* steromadness= new QAudioOutput();
 
-    static QMediaPlayer* level1_music;
+
 
     static QGraphicsScene* scene;
     static QGraphicsView* view;
@@ -46,6 +46,7 @@ private:
     static QTimer* enemy_timer;
     static QTimer* coin_timer;
     static QTimer *elapsed_time;
+    static QTimer* platform_timer;
 
 
 

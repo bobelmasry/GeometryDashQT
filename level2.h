@@ -1,18 +1,19 @@
 #ifndef LEVEL2_H
 #define LEVEL2_H
 
-#include "level1.h"
+#include "level_base.h"
 #include "qgraphicsscene.h"
 #include <QDialog>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+
 
 namespace Ui
 {
 class level2;
 }
 
-class level2: public QDialog
+class level2: public QDialog, public level_base
 {
     Q_OBJECT
 
@@ -21,16 +22,12 @@ public:
     ~level2();
     static void level_complete();
     void elapsed_timer_creator(QGraphicsScene *scene);
-    void play_music();
     static QMediaPlayer*level2_music;
+    void play_music();
 private:
 
     QAudioOutput* start_level = new QAudioOutput();
     QMediaPlayer* start_level_audio = new QMediaPlayer();
-
-
-    QAudioOutput* base_after_base= new QAudioOutput();
-
 
     static QGraphicsScene* scene;
     static QGraphicsView* view;
@@ -39,6 +36,8 @@ private:
     static QTimer* coin_timer;
     static QTimer* platform_timer;
     static QTimer* player_timer;
+
+    QAudioOutput* base_after_base= new QAudioOutput();
     //static QTimer* elapsed_time;
 
     void set_level(QGraphicsScene *scene,QGraphicsView *view) ;

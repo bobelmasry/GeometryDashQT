@@ -7,6 +7,10 @@
 #include <coin.h>
 #include <QApplication>
 #include "platform.h"
+#include "level_base.h"
+#include "level2.h"
+#include "level3.h"
+#include "level4.h"
 
 QList<Enemy*>Enemy::enemies;
 
@@ -76,15 +80,30 @@ Enemy::Enemy(Player &player) : m_player(player) {
 
     ////checking game over sequence based on how many eneimes have been continously created
 
-    if(++continous_enemies<80)
+
+    //condition for level 2 completion
+    if(++continous_enemies<30&&level_base::level==2)
     {
         continous_enemies++;
         qDebug()<<continous_enemies;
     }
 
-    else if(continous_enemies>80)
+    else if(continous_enemies>30&&level_base::level==2)
     {
-        level1::level_complete();
+        level2::level_complete();
+    }
+
+    //condition for level 3 completion
+
+    if(++continous_enemies<150&&level_base::level==3)
+    {
+        continous_enemies++;
+        qDebug()<<continous_enemies;
+    }
+
+    else if(continous_enemies>150&&level_base::level==3)
+    {
+        level3::level_complete();
     }
 
 }
@@ -124,6 +143,31 @@ void Enemy::player_hit()
         });
 
     }
+
+    if (level2::level2_music) {
+        level2::level2_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level2::level2_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+
+    }
+
+    if (level3::level3_music) {
+        level3::level3_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level3::level3_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+
+    }
+
+    if (level4::level4_music) {
+        level4::level4_music->stop(); // Stop the music
+        QTimer::singleShot(1000, []() {
+            level4::level4_music->play(); // Play the music after a delay of 1000 milliseconds (1 second)
+        });
+
+    }
+
 
     continous_enemies=0;
 

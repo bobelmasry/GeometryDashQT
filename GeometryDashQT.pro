@@ -16,6 +16,8 @@ SOURCES += \
     level1.cpp \
     level2.cpp \
     level3.cpp \
+    level4.cpp \
+    level_base.cpp \
     main.cpp \
     mainwindow.cpp \
     platform.cpp \
@@ -28,6 +30,8 @@ HEADERS += \
     level1.h \
     level2.h \
     level3.h \
+    level4.h \
+    level_base.h \
     mainwindow.h \
     platform.h \
     player.h
@@ -43,3 +47,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources.qrc
+
+DISTFILES +=
